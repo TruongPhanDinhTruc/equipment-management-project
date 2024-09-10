@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from "react-router-dom";
+import { realtimeDB } from "../../firebase";
+import { child, get, ref } from 'firebase/database';
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -13,12 +16,62 @@ const Login = () => {
     inputEmailRef?.current?.focus();
   }, []);
 
+  const getUserList = async () => {
+    try {
+      const dbRef = ref(realtimeDB);
+
+      const admin = await get(child(dbRef, "admin"));
+      const user = await get(child(dbRef, "user"));
+
+      const data1 = admin.exists() ? admin.val() : null;
+      const data2 = user.exists() ? user.val() : null;
+
+      // Combine data into an array
+      const userList = data1.concat(data2);
+      return userList;
+    } catch (error) {
+      toast.error("Error fetching data: ", error);
+    }
+  };
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = () => {
-
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    await getUserList();
+    const userList = await getUserList();
+    if (
+      !userList.some(
+        (user) =>
+          user?.adEmail === form.email ||
+          user?.userEmail === form.email
+      )
+    )
+      return toast.error();
+    userList.forEach((user) => {
+      if (
+        user?.adEmail === form.email ||
+        user?.userEmail === form.email
+      ) {
+        if (user.userPassword === form.password) {
+          delete user.userPassword;
+          // dispatch(getCurrentLoginUser(user));
+          sessionStorage.setItem("user", JSON.stringify(user));
+          sessionStorage.setItem("role", "user");
+          toast.success("Welcome " + user.userName);
+          navigate("/main/");
+        } else if (user.adPassword === form.password) {
+          delete user.adPassword;
+          // dispatch(getCurrentLoginUser(user));
+          sessionStorage.setItem("admin", JSON.stringify(user));
+          sessionStorage.setItem("role", "admin");
+          toast.success("Welcome Super Admin");
+          navigate("/main/");
+        } else toast.error("Password is incorrect");
+      }
+    });
   }
   return (
     <div className="container mx-auto px-4 h-full">
