@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-// import { SupSidebar } from "../components/siderbar/supSidebar";
 import Header from "../components/header/header";
+import { AdSidebar } from "../components/sliderbar/adSliderbar";
 
 export default function Admin() {
   const userRole = sessionStorage.getItem("role");
@@ -47,14 +47,14 @@ export default function Admin() {
         pauseOnHover
         theme="light"
       />
-      {/* {userRole === "admin" && (
-        <SupSidebar
+      {userRole === "admin" && (
+        <AdSidebar
           isMinimized={isSidebarMinimized}
           isHideLogo={isHideLogo}
           toggleSidebar={toggleSidebar}
-        ></SupSidebar>
+        ></AdSidebar>
       )}
-      {userRole === "user" && (
+      {/* {userRole === "user" && (
         <UniSidebar
           isMinimized={isSidebarMinimized}
           isHideLogo={isHideLogo}
