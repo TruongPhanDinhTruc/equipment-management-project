@@ -7,12 +7,15 @@ import { BrowserRouter } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./assets/styles/tailwind.css";
 import "react-toastify/dist/ReactToastify.css";
+import { Provider } from 'react-redux';
+import store from "./redux/store";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <App />
-
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>
 );
 

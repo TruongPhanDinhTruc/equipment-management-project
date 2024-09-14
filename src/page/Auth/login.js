@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { realtimeDB } from "../../firebase";
 import { child, get, ref } from 'firebase/database';
 import { toast } from "react-toastify";
+import { getCurrentLoginUser } from "../../redux/user/userSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -11,6 +13,7 @@ const Login = () => {
   });
   const inputEmailRef = useRef();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     inputEmailRef?.current?.focus();
@@ -57,18 +60,18 @@ const Login = () => {
       ) {
         if (user.userPassword === form.password) {
           delete user.userPassword;
-          // dispatch(getCurrentLoginUser(user));
+          dispatch(getCurrentLoginUser(user));
           sessionStorage.setItem("user", JSON.stringify(user));
           sessionStorage.setItem("role", "user");
           toast.success("Welcome " + user.userName);
           navigate("/main/");
         } else if (user.adPassword === form.password) {
           delete user.adPassword;
-          // dispatch(getCurrentLoginUser(user));
+          dispatch(getCurrentLoginUser(user));
           sessionStorage.setItem("admin", JSON.stringify(user));
           sessionStorage.setItem("role", "admin");
           toast.success("Welcome Super Admin");
-          navigate("/main/");
+          navigate("/main/user-management");
         } else toast.error("Password is incorrect");
       }
     });

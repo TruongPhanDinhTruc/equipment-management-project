@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 // import { Menu, MenuHandler } from "@material-tailwind/react";
 import { MoonFilled, SunFilled } from "@ant-design/icons";
 import { Avatar, Dropdown, Menu, Switch } from "antd";
+import { useSelector } from 'react-redux';
 
 function Header({ isMinimized }) {
   const [darkMode, setDarkMode] = useState(true);
   const user = JSON.parse(sessionStorage.getItem("user"));
   const role = sessionStorage.getItem("role");
-  // const pageTile = useSelector((state) => state.page?.page?.titile);
+  const pageTile = useSelector((state) => state.page?.page?.titile);
   
   useEffect(() => {
     if (darkMode) {
@@ -41,7 +42,7 @@ function Header({ isMinimized }) {
       <div className="w-full flex items-center justify-between h-full px-6 mx-auto text-black dark:text-white">
         {!isMinimized && (
           <h1 className="relative flex text-5xl flex-wrap items-stretch">
-            {/* {pageTile} */}Title Page
+            {pageTile}
           </h1>
         )}
         <ul className="flex items-center flex-shrink-0 space-x-6">

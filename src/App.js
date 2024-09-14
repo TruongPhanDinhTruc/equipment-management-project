@@ -12,6 +12,7 @@ function App() {
         <Route index element={<Login />} />
       </Route>
       <Route path="/main" element={<Main />}>
+        <Route index path="/main/user-management" element={<UserManagement />} />
         <Route index element={<UserManagement />} />
       </Route>
     </Routes>
