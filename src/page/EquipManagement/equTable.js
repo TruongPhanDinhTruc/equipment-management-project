@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { realtimeDB } from "../../firebase";
 import { onValue, ref, remove, update } from "firebase/database";
 import { toast } from "react-toastify";
+import { getAllEqu } from "../../redux/equip/equSlice";
 
 function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, filterType, currentPage, setCurrentPage }) {
     const [equList, setEquList] = useState([]);
@@ -17,11 +18,11 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
 
     const getAllEquFormDb = () => {
         const supRef = ref(realtimeDB, "equ");
-        onValue(supRef, (snapshot) => {
+        onValue(supRef, async (snapshot) => {
             if (snapshot.exists()) {
-                const equList = snapshot.val();
+                const equList = await snapshot.val();
                 setEquList(equList);
-                // dispatch(getAllStd(stdList));
+                dispatch(getAllEqu(equList));
             }
         });
     };

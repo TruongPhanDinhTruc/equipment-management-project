@@ -9,6 +9,7 @@ import { onValue, ref } from 'firebase/database';
 import { setPageTitle } from "../../redux/page/pageSlice";
 import { Menu, MenuHandler, MenuItem, MenuList } from '@material-tailwind/react';
 import EquTable from './equTable';
+import EquModal from './equModal';
 
 function Equ() {
     const locations = useSelector(
@@ -100,15 +101,6 @@ function Equ() {
     return (
         <>
             <div className='p-2 mt-8 flex items-center bg-white shadow-bottom dark:bg-white'>
-                <Button
-                    className="ml-2 mr-2 bg-purple"
-                    size="large"
-                    onClick={() => {
-                        setIsAddModal(true);
-                        setIsOpenModal(true);
-                    }}>
-                    Add Equip
-                </Button>
                 <div className="w-1/3 justify-start">
                     <Search
                         className="ml-2 "
@@ -203,7 +195,7 @@ function Equ() {
                         </MenuList>
                     </Menu> */}
                     <Dropdown
-                        className="ml-2 bg-purple"
+                        className="ml-2 bg-orange text-white"
                         menu={{
                             items: itemsSort,
                             onClick: ({ key }) => setSortType(key),
@@ -218,6 +210,15 @@ function Equ() {
 
 
                 </div>
+                <Button
+                    className="ml-2 mr-2 bg-orange text-white"
+                    size="large"
+                    onClick={() => {
+                        setIsAddModal(true);
+                        setIsOpenModal(true);
+                    }}>
+                    Add Equip
+                </Button>
             </div>
 
             <EquTable
@@ -232,7 +233,11 @@ function Equ() {
             />
 
             {isOpenModal && (
-                <></>
+                <EquModal
+                    form={form}
+                    isOpenModal={isOpenModal}
+                    isAddModal={isAddModal}
+                    setIsOpenModal={setIsOpenModal} />
             )}
         </>
     )
