@@ -15,6 +15,7 @@ module.exports = withMT({
   theme: {
     colors: {
       ...colors,
+      "orange": "#fb923c",
     },
     extend: {
       minHeight: {
