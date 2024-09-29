@@ -144,6 +144,7 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
             title: "Manufacture Date",
             dataIndex: "equManufactureDate",
             key: "equManufactureDate",
+            render: (equManufactureDate) => <span>{new Date(equManufactureDate)?.toLocaleDateString()}</span>,
         },
         {
             title: "Price",
@@ -154,6 +155,7 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
             title: "Expiry Date",
             dataIndex: "equExpiryDate",
             key: "equExpiryDate",
+            render: (equExpiryDate) => <span>{new Date(equExpiryDate)?.toLocaleDateString()}</span>,
         },
         {
             title: "Manufacturer",
@@ -189,7 +191,7 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
                     showQuickJumper
                     current={currentPage}
                     pageSize={pageSize}
-                    showTotal={(total) => `Total ${total} students`}
+                    showTotal={(total) => `Total ${total} equips`}
                     onChange={handlePaging}
                 ></Pagination>
             </div>
