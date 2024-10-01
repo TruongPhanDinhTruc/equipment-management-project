@@ -1,11 +1,11 @@
-import { Button, DatePicker, Form, Input, Modal } from 'antd'
+import { Button, DatePicker, Form, Modal } from 'antd'
 import { child, ref, set, update } from 'firebase/database';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { realtimeDB } from '../../firebase';
 import EquInputField from './equInputField';
 import { toast } from "react-toastify";
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
     const equList = useSelector((state) => state.equip?.equ?.allEqu);
@@ -18,8 +18,8 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
     const handleAdd = (e) => {
         const id = [...equList].pop().id + 1;
         const equRef = child(ref(realtimeDB), "equ/" + id);
-        const manufactureDate = e.equManufactureDate.toISOString();
-        const expiryDate = e.equExpiryDate.toISOString();
+        const manufactureDate = e.equManufactureDate.valueOf();
+        const expiryDate = e.equExpiryDate.valueOf();
         // console.log("equManufactureDate: ", manufactureDate);
         const allValues = form.getFieldsValue(true);
 
@@ -39,23 +39,23 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
     };
 
     const handleEdit = (e) => {
-        const manufactureDate = e.equManufactureDate.toISOString();
-        const expiryDate = e.equExpiryDate.toISOString();
+        const equManufactureDate = e.manufactureDate.valueOf();
+        const equExpiryDate = e.expiryDate.valueOf();
         // console.log("equManufactureDate: ", manufactureDate);
         const allValues = form.getFieldsValue(true);
 
-        const { equManufactureDate, equExpiryDate, ...otherValues } = allValues;
+        const { manufactureDate, expiryDate, ...otherValues } = allValues;
         const postData = {
             ...otherValues,
-            equManufactureDate: manufactureDate,
-            equExpiryDate: expiryDate,
+            equManufactureDate: equManufactureDate,
+            equExpiryDate: equExpiryDate,
         };
 
         const updates = {};
         updates["/equ/" + form.getFieldValue("id")] = postData;
 
         return update(ref(realtimeDB), updates)
-            .then(toast.success("Update Equip success"), setIsOpenModal(false))
+            .then(toast.success("Update Equip successfully"), setIsOpenModal(false))
             .catch((err) => {
                 toast.error(err);
             });
@@ -75,7 +75,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
                 footer={(_, { CancelBtn }) => (
                     <>
                         <CancelBtn />
-                        <Button htmlType="submit" form="equ_form" className="bg-orange">{isAddModal ? "Add Equip" : "Save Equip"}</Button>
+                        <Button htmlType="submit" form="equ_form" className="bg-orange text-white">{isAddModal ? "Add Equip" : "Save Equip"}</Button>
                     </>
                 )}>
                 <h1 className="text-3xl font-bold mb-4 text-orange text-center">{isAddModal ? "ADD EQUIP" : "EDIT EQUIP"}</h1>
@@ -85,9 +85,6 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
                     onFinish={isAddModal ? handleAdd : handleEdit}
                     name="equ_form"
                     id="equ_form"
-                    initialValues={{
-                        modifier: "public",
-                    }}
                     clearOnDestroy
                 // onFinish={(values) => onCreate(values)}
                 >
@@ -97,7 +94,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
                         {/* <EquInputField name={"equManufactureDate"} label={"Manufacture Date"} type={"number"} /> */}
                         <div className="w-1/2">
                             <Form.Item
-                                name="equManufactureDate"
+                                name={isAddModal ? "equManufactureDate" : "manufactureDate"}
                                 label="Manufacture Date"
                                 rules={[
                                     {
@@ -106,7 +103,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
                                     },
                                 ]}
                             >
-                                <DatePicker value={equManufactureDate ? moment(equManufactureDate) : null} size="large" />
+                                <DatePicker defaultValue={isAddModal ? null : dayjs(equManufactureDate)} size="large" />
                             </Form.Item>
                         </div>
                     </div>
@@ -123,7 +120,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
                         {/* <EquInputField name={"equExpiryDate"} label={"Expiry Date"} type={"number"} /> */}
                         <div className="w-1/2">
                             <Form.Item
-                                name="equExpiryDate"
+                                name={isAddModal ? "equExpiryDate" : "expiryDate"}
                                 label="Expiry Date"
                                 rules={[
                                     {
@@ -132,11 +129,9 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
                                     },
                                 ]}
                             >
-                                <DatePicker value={equExpiryDate ? moment(equExpiryDate) : null} size="large" />
+                                <DatePicker defaultValue={isAddModal ? null : dayjs(equExpiryDate)} size="large" />
                             </Form.Item>
                         </div>
-                        {/* <equSelectField name={"equConduct"} label={"Conduct"} listSelect={listConduct} form={form} isAddModal={false}/> */}
-
                     </div>
                 </Form>
             </Modal>

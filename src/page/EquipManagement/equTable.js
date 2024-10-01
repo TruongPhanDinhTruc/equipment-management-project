@@ -137,8 +137,8 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
         },
         {
             title: "Quantily",
-            dataIndex: "equQuantily",
-            key: "equQuantily",
+            dataIndex: "equQuantity",
+            key: "equQuantity",
         },
         {
             title: "Manufacture Date",
@@ -166,7 +166,74 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
             title: "Status",
             dataIndex: "equStatus",
             key: "equStatus",
+            render: (equStatus, record) => (
+                <span>
+                  {equStatus === "1" ? (
+                    <Tag color="green">Running</Tag>
+                  ) : equStatus === "2" ? (
+                    <Tag color="yellow">Under repair</Tag>
+                  ) : equStatus === "3" ? (
+                    <Tag color="red">Defective</Tag>
+                  ) : (
+                    <Tag color="gray">Unknown</Tag>
+                  )}
+                </span>
+              ),
         },
+        {
+            title: "Action",
+            dataIndex: "equStatus",
+            key: "action",
+            className: "max-w-12",
+            render: (equStatus, record) => (
+              <Space
+                className="flex justify-end"
+                onClick={(e) => {
+                  console.log(e);
+                  e.stopPropagation();
+                }}
+              >
+                {equStatus === 1 ? (
+                  <>
+                    <Switch
+                      className={
+                        record.userStatus === 1
+                          ? "switch-checked"
+                          : "switch-unchecked"
+                      }
+                      checked={record.userStatus === 1}
+                      onChange={(checked, event) => {
+                        const newUserStatus = checked ? 1 : 2;
+                        confirmSwitchStatus(record, 1, newUserStatus, event);
+                      }}
+                    ></Switch>
+                    <DeleteFilled
+                      className=" text-black text-xl"
+                      onClick={(event) => confirmDelete(record, event)}
+                    ></DeleteFilled>
+                  </>
+                ) : equStatus === 3 ? (
+                  <>
+                    <CheckOutlined
+                      className=" text-green-500 text-xl"
+                      onClick={() => handleRowClick(record)}
+                    />
+                    <CloseOutlined
+                      className="ml-2 text-red-500 text-xl"
+                      onClick={(event) => confirmSwitchStatus(record, 2, 2, event)}
+                    />
+                  </>
+                ) : equStatus === 2 ? (
+                  <DeleteFilled
+                    className=" text-black text-xl"
+                    onClick={(event) => confirmDelete(record, event)}
+                  />
+                ) : (
+                  ""
+                )}
+              </Space>
+            ),
+          },
     ];
     return (
         <>
