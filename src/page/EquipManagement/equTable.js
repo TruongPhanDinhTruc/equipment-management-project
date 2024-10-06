@@ -113,12 +113,12 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
         event.stopPropagation();
         Modal.confirm({
             title: "Are you sure?",
-            content: "Do you want to delete this student?",
+            content: "Do you want to delete this equip?",
             onOk() {
-                const recordRef = ref(realtimeDB, `std/${record.id}`);
+                const recordRef = ref(realtimeDB, `equ/${record.id}`);
                 remove(recordRef);
-                getAllEquFormDb();
-                toast.success("Remove student success.");
+                // getAllEquFormDb();
+                toast.success("Remove equip successfully.");
             },
         });
     };
@@ -137,8 +137,8 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
         },
         {
             title: "Quantily",
-            dataIndex: "equQuantily",
-            key: "equQuantily",
+            dataIndex: "equQuantity",
+            key: "equQuantity",
         },
         {
             title: "Manufacture Date",
@@ -166,7 +166,32 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
             title: "Status",
             dataIndex: "equStatus",
             key: "equStatus",
+            render: (equStatus, record) => (
+                <span>
+                  {equStatus === 1 ? (
+                    <Tag color="green">Activating</Tag>
+                  ) : equStatus === 2 ? (
+                    <Tag color="yellow">Under repair</Tag>
+                  ) : equStatus === 3 ? (
+                    <Tag color="red">Defective</Tag>
+                  ) : (
+                    <Tag color="gray">Unknown</Tag>
+                  )}
+                </span>
+              ),
         },
+        {
+            title: "Action",
+            dataIndex: "equStatus",
+            key: "action",
+            // className: "max-w-12",
+            render: (equStatus, record) => (
+                  <DeleteFilled
+                    className=" text-black text-xl"
+                    onClick={(event) => confirmDelete(record, event)}
+                  />
+            ),
+          },
     ];
     return (
         <>

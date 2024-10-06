@@ -67,11 +67,21 @@ function Equ() {
             ],
         },
         // { label: "Location", key: "2", },
+        // {
+        //     label: "GPA",
+        //     children: [
+        //         { label: "Ascending", key: "low2High", },
+        //         { label: "Descending", key: "high2Low", },
+        //     ],
+        // },
+    ];
+
+    const itemsFilter = [
         {
-            label: "GPA", key: "3",
+            label: "Name", key: "1",
             children: [
-                { label: "Ascending", key: "low2High", },
-                { label: "Descending", key: "high2Low", },
+                // { label: "A to Z", key: "aToZ", },
+                // { label: "Z to A", key: "zToA", },
             ],
         },
     ];
@@ -197,6 +207,19 @@ function Equ() {
                     <Dropdown
                         className="ml-2 bg-orange text-white"
                         menu={{
+                            items: itemsFilter,
+                            // onClick: ({ key }) => setSortType(key),
+                        }}>
+                        <Button size="large">
+                            <Space>
+                                Filter
+                                <SortAscendingOutlined />
+                            </Space>
+                        </Button>
+                    </Dropdown>
+                    <Dropdown
+                        className="ml-2 bg-orange text-white"
+                        menu={{
                             items: itemsSort,
                             onClick: ({ key }) => setSortType(key),
                         }}>
@@ -207,7 +230,6 @@ function Equ() {
                             </Space>
                         </Button>
                     </Dropdown>
-
 
                 </div>
                 <Button
