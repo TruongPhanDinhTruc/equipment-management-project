@@ -17,7 +17,7 @@ function EquInputField({ name, label, type }) {
                     },
                 ]}
             >
-                <Input size="large" type={type} />
+                <Input size="large" suffix={name === "equPrice" ? "VND" : ""} type={type} />
             </Form.Item>
         </div>
     )

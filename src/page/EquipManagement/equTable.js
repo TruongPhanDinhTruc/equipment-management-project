@@ -113,12 +113,12 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
         event.stopPropagation();
         Modal.confirm({
             title: "Are you sure?",
-            content: "Do you want to delete this student?",
+            content: "Do you want to delete this equip?",
             onOk() {
-                const recordRef = ref(realtimeDB, `std/${record.id}`);
+                const recordRef = ref(realtimeDB, `equ/${record.id}`);
                 remove(recordRef);
-                getAllEquFormDb();
-                toast.success("Remove student success.");
+                // getAllEquFormDb();
+                toast.success("Remove equip successfully.");
             },
         });
     };
@@ -168,11 +168,11 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
             key: "equStatus",
             render: (equStatus, record) => (
                 <span>
-                  {equStatus === "1" ? (
-                    <Tag color="green">Running</Tag>
-                  ) : equStatus === "2" ? (
+                  {equStatus === 1 ? (
+                    <Tag color="green">Activating</Tag>
+                  ) : equStatus === 2 ? (
                     <Tag color="yellow">Under repair</Tag>
-                  ) : equStatus === "3" ? (
+                  ) : equStatus === 3 ? (
                     <Tag color="red">Defective</Tag>
                   ) : (
                     <Tag color="gray">Unknown</Tag>
@@ -184,54 +184,12 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
             title: "Action",
             dataIndex: "equStatus",
             key: "action",
-            className: "max-w-12",
+            // className: "max-w-12",
             render: (equStatus, record) => (
-              <Space
-                className="flex justify-end"
-                onClick={(e) => {
-                  console.log(e);
-                  e.stopPropagation();
-                }}
-              >
-                {equStatus === 1 ? (
-                  <>
-                    <Switch
-                      className={
-                        record.userStatus === 1
-                          ? "switch-checked"
-                          : "switch-unchecked"
-                      }
-                      checked={record.userStatus === 1}
-                      onChange={(checked, event) => {
-                        const newUserStatus = checked ? 1 : 2;
-                        confirmSwitchStatus(record, 1, newUserStatus, event);
-                      }}
-                    ></Switch>
-                    <DeleteFilled
-                      className=" text-black text-xl"
-                      onClick={(event) => confirmDelete(record, event)}
-                    ></DeleteFilled>
-                  </>
-                ) : equStatus === 3 ? (
-                  <>
-                    <CheckOutlined
-                      className=" text-green-500 text-xl"
-                      onClick={() => handleRowClick(record)}
-                    />
-                    <CloseOutlined
-                      className="ml-2 text-red-500 text-xl"
-                      onClick={(event) => confirmSwitchStatus(record, 2, 2, event)}
-                    />
-                  </>
-                ) : equStatus === 2 ? (
                   <DeleteFilled
                     className=" text-black text-xl"
                     onClick={(event) => confirmDelete(record, event)}
                   />
-                ) : (
-                  ""
-                )}
-              </Space>
             ),
           },
     ];

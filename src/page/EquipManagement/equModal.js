@@ -30,7 +30,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
             ...otherValues,
             equManufactureDate: manufactureDate,
             equExpiryDate: expiryDate,
-            equStatus: "1"
+            equStatus: 1
         })
             .then(toast.success("Add new equip success"), setIsOpenModal(false))
             .catch((err) => {
@@ -39,18 +39,25 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
     };
 
     const handleEdit = (e) => {
-        const equManufactureDate = e.manufactureDate.valueOf();
-        const equExpiryDate = e.expiryDate.valueOf();
+        const equManufactureDate = e.manufactureDate ? e.manufactureDate.valueOf() : null;
+        const equExpiryDate = e.expiryDate ? e.expiryDate.valueOf() : null;
         // console.log("equManufactureDate: ", manufactureDate);
         const allValues = form.getFieldsValue(true);
 
         const { manufactureDate, expiryDate, ...otherValues } = allValues;
         const postData = {
             ...otherValues,
-            equManufactureDate: equManufactureDate,
-            equExpiryDate: equExpiryDate,
+            // equManufactureDate: equManufactureDate,
+            // equExpiryDate: equExpiryDate,
         };
+        if (equManufactureDate !== null) {
+            postData.equManufactureDate = equManufactureDate;
+        }
 
+        // Chỉ thêm equExpiryDate nếu nó không null
+        if (equExpiryDate !== null) {
+            postData.equExpiryDate = equExpiryDate;
+        }
         const updates = {};
         updates["/equ/" + form.getFieldValue("id")] = postData;
 
@@ -98,7 +105,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
                                 label="Manufacture Date"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: isAddModal ? true : false,
                                         message: "Please input the Manufacture Date",
                                     },
                                 ]}
@@ -124,7 +131,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
                                 label="Expiry Date"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: isAddModal ? true : false,
                                         message: "Please input the Expiry Date",
                                     },
                                 ]}
