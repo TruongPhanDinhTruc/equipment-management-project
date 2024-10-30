@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react'
 import MaintTable from './maintTable';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Form } from 'antd';
+import { Button, Dropdown, Form, Space } from 'antd';
 import { setPageTitle } from '../../redux/page/pageSlice';
 import MaintModal from './maintModal';
+import { FilterOutlined, SortAscendingOutlined } from '@ant-design/icons';
 
 function Maint() {
   const [form] = Form.useForm();
@@ -24,7 +25,28 @@ function Maint() {
     }
     dispatch(setPageTitle("Maintenance Management"));
   }, []);
-  
+
+  const itemsSort = [
+    {
+      label: "Name", key: "1",
+      children: [
+        { label: "A to Z", key: "aToZ", },
+        { label: "Z to A", key: "zToA", },
+      ],
+    },
+  ];
+
+  const itemsFilter = [
+    {
+      label: "Status", key: "1",
+      children: [
+        { label: "Activating", key: "Activating", },
+        { label: "Under Repair", key: "Under Repair", },
+        { label: "Defective", key: "Defective", },
+      ],
+    },
+  ];
+
   return (
     <>
       <div className='p-2 mt-8 flex items-center bg-white shadow-bottom dark:bg-white'>
@@ -41,7 +63,32 @@ function Maint() {
             size="large" />
         </div>
         <div className="w-2/3 flex justify-end">
-
+          <Dropdown
+            className="ml-2 bg-orange text-white"
+            menu={{
+              items: itemsFilter,
+              // onClick: ({ key }) => handleFilter("status", key, ""),
+            }}>
+            <Button size="large">
+              <Space>
+                Filter
+                <FilterOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+          <Dropdown
+            className="ml-2 bg-orange text-white"
+            menu={{
+              items: itemsSort,
+              onClick: ({ key }) => setSortType(key),
+            }}>
+            <Button size="large">
+              <Space>
+                Sort
+                <SortAscendingOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
         </div>
       </div>
       <MaintTable

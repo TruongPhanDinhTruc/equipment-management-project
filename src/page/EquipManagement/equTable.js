@@ -1,9 +1,9 @@
 import { DeleteFilled } from "@ant-design/icons";
-import { Pagination, Space, Switch, Table, Tag, Modal, } from "antd";
+import { Pagination, Table, Tag, Modal, } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { realtimeDB } from "../../firebase";
-import { onValue, ref, remove, update } from "firebase/database";
+import { onValue, ref, remove } from "firebase/database";
 import { toast } from "react-toastify";
 import { getAllEqu } from "../../redux/equip/equSlice";
 
@@ -45,8 +45,6 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
 
   const sortList = (stdList, order) => {
     return [...stdList].sort((a, b) => {
-      if (order === "low2High") return a.stdGPA - b.stdGPA;
-      if (order === "high2Low") return b.stdGPA - a.stdGPA;
       if (order === "aToZ") return a.equName.localeCompare(b.equName);
       if (order === "zToA") return b.equName.localeCompare(a.equName);
       return 0;
@@ -124,11 +122,6 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       title: "Name",
       dataIndex: "equName",
       key: "equName",
-    },
-    {
-      title: "Quantily",
-      dataIndex: "equQuantity",
-      key: "equQuantity",
     },
     {
       title: "Manufacture Date",
