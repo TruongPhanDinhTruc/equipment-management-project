@@ -5,6 +5,7 @@ import Login from "./page/Auth/login";
 import Main from "./layout/main";
 import UserManagement from "./page/UserManagement/usermanagement";
 import EquipManagement from "./page/EquipManagement/equManagement";
+import MaintenanceManagement from "./page/MaintenanceManagement/maintManagement";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route index path="/main/user-management" element={<UserManagement />} />
         <Route index element={<UserManagement />} />
         <Route path="/main/equip-management" element={<EquipManagement />} />
+        <Route path="/main/maintenance-management" element={<MaintenanceManagement />} />
       </Route>
     </Routes>
   );

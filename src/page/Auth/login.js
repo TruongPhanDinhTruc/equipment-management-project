@@ -5,12 +5,14 @@ import { child, get, ref } from 'firebase/database';
 import { toast } from "react-toastify";
 import { getCurrentLoginUser } from "../../redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import { Button } from 'antd';
 
 const Login = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const inputEmailRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -42,6 +44,7 @@ const Login = () => {
   };
 
   const handleLogin = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     await getUserList();
     const userList = await getUserList();
@@ -72,7 +75,10 @@ const Login = () => {
           sessionStorage.setItem("role", "admin");
           toast.success("Welcome Super Admin");
           navigate("/main/user-management");
-        } else toast.error("Password is incorrect");
+        } else {
+          setIsLoading(false);
+          toast.error("Password is incorrect")
+        };
       }
     });
   }
@@ -148,12 +154,19 @@ const Login = () => {
                   </p>
                 </div> */}
                 <div className="text-center mt-6">
-                  <button
+                  <Button
+                    loading={isLoading}
+                    className="justify-center h-100 items-center bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                    htmlType="submit">
+                    Sign In
+                  </Button>
+                  {/* <button
+                    onLoad={isLoading}
                     className="justify-center items-center bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                     type="submit"
                   >
                     Sign In
-                  </button>
+                  </button> */}
                 </div>
               </form>
             </div>
