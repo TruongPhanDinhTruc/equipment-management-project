@@ -60,6 +60,11 @@ function UserManagement() {
       return;
     }
 
+    if (!userName.trim()) {
+      alert("Name cannot be empty or just spaces.");
+      return;
+    }
+
     if (!isValidEmail(userEmail)) {
       alert("Invalid email format.");
       return;
@@ -86,6 +91,36 @@ function UserManagement() {
   };
 
   const handleUpdateUser = async () => {
+    const { userEmail, userName, userPhone } = updatedUser;
+
+    if (!userEmail || !userName || !userPhone) {
+      alert("Please fill all fields.");
+      return;
+    }
+
+    if (!userName.trim()) {
+      alert("Name cannot be empty or just spaces.");
+      return;
+    }
+    if (!isValidEmail(userEmail)) {
+      alert("Invalid email format.");
+      return;
+    }
+  
+    if (!isValidPhone(userPhone)) {
+      alert("Phone number must be 10 digits.");
+      return;
+    }
+    if (users.some(user => user.userEmail === userEmail && user.id !== selectedUser.id)) {
+      alert("Email already exists.");
+      return;
+    }
+  
+    if (users.some(user => user.userPhone === userPhone && user.id !== selectedUser.id)) {
+      alert("Phone number already exists.");
+      return;
+    }
+    
     await updateUser(selectedUser.id, updatedUser);
     fetchUsers();
     setIsUpdateModalOpen(false);
@@ -103,7 +138,7 @@ function UserManagement() {
   };
 
   const handleDeleteButtonClick = (event, id) => {
-    event.stopPropagation(); // Ngăn chặn sự kiện click lan truyền
+    event.stopPropagation(); 
     handleDeleteUser(id);
   };
 
@@ -162,7 +197,7 @@ function UserManagement() {
                 <td className="px-4 py-2 border-b">{user.userPhone}</td>
                 <td className="px-4 py-2 border-b text-center">
                   <button
-                    onClick={(e) => handleDeleteButtonClick(e, user.id)} // Truyền sự kiện vào hàm xử lý
+                    onClick={(e) => handleDeleteButtonClick(e, user.id)}
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                   >
                     Delete
