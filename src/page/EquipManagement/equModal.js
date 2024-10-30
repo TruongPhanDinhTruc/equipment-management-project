@@ -18,34 +18,38 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
 
   const handleAdd = (e) => {
     setIsLoading(true);
-    const id = [...equList].pop().id + 1;
-    const equRef = child(ref(realtimeDB), "equ/" + id);
-    const maintRef = child(ref(realtimeDB), "maint/" + id);
-    const manufactureDate = e.equManufactureDate.valueOf();
-    const expiryDate = e.equExpiryDate.valueOf();
     const allValues = form.getFieldsValue(true);
+    const { equManufactureDate, equExpiryDate, equQuantity, equName, ...otherValues } = allValues;
 
-    const { equManufactureDate, equExpiryDate, ...otherValues } = allValues;
+    const manufactureDate = equManufactureDate.valueOf();
+    const expiryDate = equExpiryDate.valueOf();
 
-    const equData = {
-      id: id,
-      ...otherValues,
-      equManufactureDate: manufactureDate,
-      equExpiryDate: expiryDate,
-      equStatus: 1,
-    };
+    const createPromises = [];
 
-    const maintData = {
-      id: id,
-      // lastMaintenanceDate: manufactureDate,
-      // nextMaintenanceDate: expiryDate,
-      // status: "Scheduled",
-    };
+    for (let i = 0; i < equQuantity; i++) {
+      const id = [...equList].pop().id + 1 + i;
+      const equRef = child(ref(realtimeDB), "equ/" + id);
+      const maintRef = child(ref(realtimeDB), "maint/" + id);
 
-    set(equRef, equData)
-      .then(() => {
-        return set(maintRef, maintData);
-      })
+      const equData = {
+        id: id,
+        equName: `${equName}${id}`,
+        ...otherValues,
+        equManufactureDate: manufactureDate,
+        equExpiryDate: expiryDate,
+        equStatus: 1,
+      };
+
+      const maintData = { id: id };
+
+      // Push promises để chạy đồng thời các thao tác set
+      createPromises.push(
+        set(equRef, equData).then(() => set(maintRef, maintData))
+      );
+    }
+
+    // Chờ tất cả các promises hoàn thành
+    Promise.all(createPromises)
       .then(() => {
         toast.success("Add new equip successfully");
         setIsOpenModal(false);
@@ -141,7 +145,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
           <h2 className="text-2xl font-medium mb-4 text-orange">Equip Infomation</h2>
           <div className="flex gap-4">
             <EquInputField name={"equName"} label={"Name Equip"} type={"text"} />
-            <EquInputField name={"equQuantity"} label={"Quantity"} type={"number"} />
+            {isAddModal && <EquInputField name={"equQuantity"} label={"Quantity"} type={"number"} />}
           </div>
 
           <div className="flex gap-4">
