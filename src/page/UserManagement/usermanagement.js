@@ -40,9 +40,15 @@ function UserManagement() {
     return phonePattern.test(phone);
   };
 
-  const isUniqueEmailPhone = (email, phone) => {
+  const isUniqueEmail = (email) => {
     return !users.some(
-      (user) => user.userEmail === email || user.userPhone === phone
+      (user) => user.userEmail === email
+    );
+  };
+  
+  const isUniquePhone = (phone) => {
+    return !users.some(
+      (user) => user.userPhone === phone
     );
   };
 
@@ -64,8 +70,12 @@ function UserManagement() {
       return;
     }
 
-    if (!isUniqueEmailPhone(userEmail, userPhone)) {
-      alert("Email or phone number already exists.");
+    if (!isUniqueEmail(userEmail)) {
+      alert("Email already exists.");
+      return;
+    }
+    if (!isUniquePhone(userPhone)) {
+      alert("Phone number already exists.");
       return;
     }
 
@@ -90,6 +100,11 @@ function UserManagement() {
     setSelectedUser(user);
     setUpdatedUser(user);
     setIsUpdateModalOpen(true);
+  };
+
+  const handleDeleteButtonClick = (event, id) => {
+    event.stopPropagation(); // Ngăn chặn sự kiện click lan truyền
+    handleDeleteUser(id);
   };
 
   const closeAddModal = () => {
@@ -147,7 +162,7 @@ function UserManagement() {
                 <td className="px-4 py-2 border-b">{user.userPhone}</td>
                 <td className="px-4 py-2 border-b text-center">
                   <button
-                    onClick={() => handleDeleteUser(user.id)}
+                    onClick={(e) => handleDeleteButtonClick(e, user.id)} // Truyền sự kiện vào hàm xử lý
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                   >
                     Delete
