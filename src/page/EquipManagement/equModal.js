@@ -141,7 +141,11 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
           <h2 className="text-2xl font-medium mb-4 text-orange">Equip Infomation</h2>
           <div className="flex gap-4">
             <EquInputField name={"equName"} label={"Name Equip"} type={"text"} />
-            {/* <EquInputField name={"equManufactureDate"} label={"Manufacture Date"} type={"number"} /> */}
+            <EquInputField name={"equQuantity"} label={"Quantity"} type={"number"} />
+          </div>
+
+          <div className="flex gap-4">
+            <EquInputField name={"equManufacturer"} label={"Manufacturer"} type={"text"} />
             <div className="w-1/2">
               <Form.Item
                 name={isAddModal ? "equManufactureDate" : "manufactureDate"}
@@ -160,13 +164,6 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
 
           <div className="flex gap-4">
             <EquInputField name={"equPrice"} label={"Price"} type={"number"} />
-            <EquInputField name={"equQuantity"} label={"Quantity"} type={"number"} />
-            {/* <equSelectField name={"equHighSchoolLocation"} label={"High School Location"} listSelect={locationList} form={form} isAddModal={isAddModal}/> */}
-          </div>
-
-          <div className="flex gap-4">
-            <EquInputField name={"equManufacturer"} label={"Manufacturer"} type={"text"} />
-            {/* <EquInputField name={"equExpiryDate"} label={"Expiry Date"} type={"number"} /> */}
             <div className="w-1/2">
               <Form.Item
                 name={isAddModal ? "equExpiryDate" : "expiryDate"}

@@ -74,7 +74,7 @@ const Login = () => {
           sessionStorage.setItem("admin", JSON.stringify(user));
           sessionStorage.setItem("role", "admin");
           toast.success("Welcome Super Admin");
-          navigate("/main/user-management");
+          navigate("/main/dashboard");
         } else {
           setIsLoading(false);
           toast.error("Password is incorrect")
