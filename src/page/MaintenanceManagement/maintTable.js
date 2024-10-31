@@ -87,9 +87,9 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
   };
 
   const getColor = (daysLeft) => {
-    if (daysLeft < 3) return 'red';         
-    if (daysLeft > 7) return 'green';      
-    return 'gold';                       
+    if (daysLeft < 3) return 'red';
+    if (daysLeft > 7) return 'green';
+    return 'gold';
   };
 
   const checkMaintDate = (value) => {
@@ -98,10 +98,55 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
     return "Maintenance date has come"
   }
 
+  const sortList = (maintList, order) => {
+    return [...maintList].sort((a, b) => {
+      const nameA = getEquById(a.id)?.equName || "";
+      const nameB = getEquById(b.id)?.equName || "";
+
+      if (order === "aToZ") return nameA.localeCompare(nameB);
+      if (order === "zToA") return nameB.localeCompare(nameA);
+      
+      return 0;
+    });
+};
+
+  const filterByStatus = (maintList, status) => {
+    if (status.type !== "status")
+      return maintList;
+    switch (status.value) {
+      case "Activating":
+        return maintList.filter((maint) => getEquById(maint.id)?.equStatus === 1);
+      case "Defective":
+        return maintList.filter((maint) => getEquById(maint.id)?.equStatus === 3);
+      case "Under Repair":
+        return maintList.filter((maint) => getEquById(maint.id)?.equStatus === 2);
+      default:
+        return maintList;
+    }
+  };
+
+  const filterByLocation = (stdList, locationFilter) => {
+    if (locationFilter.type !== "location")
+      return stdList;
+    return stdList = stdList.filter((std) => std.stdHighSchoolLocation === String(locationFilter.value))
+  };
+
+  const maintSearchList = maintList.filter(
+    (maint) =>
+      getEquById(maint.id)?.equName.toLowerCase().includes(searchText?.toLowerCase())
+  );
+  const maintFilterLocation = filterByLocation(maintSearchList, filterType);
+  const maintFilterList = filterByStatus(maintFilterLocation, filterType);
+  const maintSortList = sortList(maintFilterList, sortType);
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const maintListSlice = maintSortList.slice(startIndex, endIndex);
+
   return (
     <>
       <List
-        dataSource={maintList}
+        dataSource={maintListSlice}
         loading={isLoading}
         renderItem={(item) => (
           <Card

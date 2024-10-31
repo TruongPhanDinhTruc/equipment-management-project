@@ -103,6 +103,7 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
         Promise.all([deleteEqu, deleteMaint])
           .then(() => {
             toast.success("Remove equip successfully.");
+            setCurrentPage(1);
           })
           .catch((err) => {
             toast.error("Error removing data: " + err);
