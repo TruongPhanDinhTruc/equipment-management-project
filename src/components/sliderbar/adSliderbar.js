@@ -7,6 +7,7 @@ import { DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, Sliders
 
 export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
    const selected = useSelector((state) => state.page?.page?.titile);
+   const theme = useSelector((state) => state.theme?.theme?.currentTheme);
 
    const navigate = useNavigate();
    const dispatch = useDispatch();
@@ -14,13 +15,13 @@ export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
    const handleLogout = () => {
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("role");
-      dispatch(setPageTitle("User Management"))
+      // dispatch(setPageTitle("User Management"))
       navigate("/auth");
    };
 
    const menuItems = [
       {
-         key: "dashboard",
+         key: "Dashboard",
          icon: <HomeOutlined />,
          label: "Dashboard",
          onClick: () => {
@@ -29,7 +30,7 @@ export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
          },
       },
       {
-         key: "user-management",
+         key: "User Management",
          icon: <UserOutlined />,
          label: "User Management",
          onClick: () => {
@@ -38,7 +39,7 @@ export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
          },
       },
       {
-         key: "equip-management",
+         key: "Equip Management",
          icon: <SlidersOutlined />,
          label: "Equip Management",
          onClick: () => {
@@ -47,7 +48,7 @@ export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
          },
       },
       {
-         key: "maintenance-management",
+         key: "Maintenance Management",
          icon: <ToolOutlined />,
          label: "Maintenance",
          onClick: () => {
@@ -64,17 +65,17 @@ export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
          <div className="mb-2 flex items-center">
             <img src={logo} alt="logo" className="h-20 w-20" />
             {!isMinimized && !isHideLogo && (
-               <Typography.Title className="italic dark:text-white" level={3}>
+               <Typography.Title className="italic dark:text-white" level={2}>
                   EquipMS
                </Typography.Title>
             )}
          </div>
 
          <Menu
-            // theme="dark"
+            theme={theme}
             className="transition-all duration-300 flex flex-col dark:bg-gray-800"
             mode="inline"
-            // items={menuItems}
+            selectedKeys={[selected]}
             items={menuItems.map((item) => ({
                ...item,
                className: "dark:text-white",

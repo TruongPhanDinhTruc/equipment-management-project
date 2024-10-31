@@ -33,7 +33,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
 
       const equData = {
         id: id,
-        equName: `${equName}${id}`,
+        equName: `${equName} #${id}`,
         ...otherValues,
         equManufactureDate: manufactureDate,
         equExpiryDate: expiryDate,

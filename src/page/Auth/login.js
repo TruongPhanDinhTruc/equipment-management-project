@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { realtimeDB } from "../../firebase";
 import { child, get, ref } from 'firebase/database';
 import { toast } from "react-toastify";
@@ -12,7 +12,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const inputEmailRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const Login = () => {
       const dbRef = ref(realtimeDB);
 
       const admin = await get(child(dbRef, "admin"));
-      const user = await get(child(dbRef, "user"));
+      const user = await get(child(dbRef, "users"));
 
       const data1 = admin.exists() ? admin.val() : null;
       const data2 = user.exists() ? user.val() : null;
@@ -44,7 +44,7 @@ const Login = () => {
   };
 
   const handleLogin = async (e) => {
-    setIsLoading(true);
+    setLoading(true);
     e.preventDefault();
     await getUserList();
     const userList = await getUserList();
@@ -54,8 +54,10 @@ const Login = () => {
           user?.adEmail === form.email ||
           user?.userEmail === form.email
       )
-    )
-      return toast.error();
+    ){
+      setLoading(false);
+      return toast.error(CustomToastWithLink);
+    }
     userList.forEach((user) => {
       if (
         user?.adEmail === form.email ||
@@ -67,7 +69,7 @@ const Login = () => {
           sessionStorage.setItem("user", JSON.stringify(user));
           sessionStorage.setItem("role", "user");
           toast.success("Welcome " + user.userName);
-          navigate("/main/");
+          navigate("/main/dashboard");
         } else if (user.adPassword === form.password) {
           delete user.adPassword;
           dispatch(getCurrentLoginUser(user));
@@ -76,12 +78,21 @@ const Login = () => {
           toast.success("Welcome Super Admin");
           navigate("/main/dashboard");
         } else {
-          setIsLoading(false);
           toast.error("Password is incorrect")
         };
       }
     });
+    setLoading(false);
   }
+
+  const CustomToastWithLink = () => (
+    <div>
+      <>Account does not exist!</>
+      <br></br>
+      <span>Contact Admin to create new account!</span>
+    </div>
+  );
+
   return (
     <div className="container mx-auto px-4 h-full">
       <div className="flex content-center items-center justify-center h-full">
@@ -160,13 +171,6 @@ const Login = () => {
                     htmlType="submit">
                     Sign In
                   </Button>
-                  {/* <button
-                    onLoad={isLoading}
-                    className="justify-center items-center bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                    type="submit"
-                  >
-                    Sign In
-                  </button> */}
                 </div>
               </form>
             </div>

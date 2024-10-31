@@ -1,4 +1,4 @@
-import { CaretDownOutlined, FilterOutlined, SortAscendingOutlined } from '@ant-design/icons'
+import { CaretDownOutlined, FilterOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Form, Space, Tag } from 'antd'
 import Search from 'antd/es/transfer/search'
 import React, { useEffect, useState } from 'react'
@@ -31,8 +31,8 @@ function Equ() {
     {
       label: "Name", key: "1",
       children: [
-        { label: "A to Z", key: "aToZ", },
-        { label: "Z to A", key: "zToA", },
+        { label: <span>Ascending <SortAscendingOutlined className="ml-2" /></span>, key: "aToZ", },
+        { label: <span>Descending <SortDescendingOutlined className="ml-2" /></span>, key: "zToA", },
       ],
     },
   ];
@@ -61,11 +61,11 @@ function Equ() {
 
   return (
     <>
-      <div className='p-2 mt-8 flex items-center bg-white shadow-bottom dark:bg-white'>
+      <div className='p-2 mt-3 flex items-center bg-white shadow-bottom dark:bg-white'>
         <div className="w-1/3 justify-start">
           <Search
             className="ml-2 "
-            placeholder="Search by student name, GPA..."
+            placeholder="Search by equip name"
             allowClear
             value={searchText}
             onChange={(e) => {
