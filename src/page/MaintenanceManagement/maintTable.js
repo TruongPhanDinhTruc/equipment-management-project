@@ -102,10 +102,12 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
     return [...maintList].sort((a, b) => {
       const nameA = getEquById(a.id)?.equName || "";
       const nameB = getEquById(b.id)?.equName || "";
-
+      const dateA = new Date(a.maintDate);
+      const dateB = new Date(b.maintDate);
       if (order === "aToZ") return nameA.localeCompare(nameB);
       if (order === "zToA") return nameB.localeCompare(nameA);
-      
+      if (order === "newestDate") return dateB - dateA;
+      if (order === "oldestDate") return dateA - dateB;
       return 0;
     });
 };
