@@ -19,7 +19,7 @@ function Maint() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!sessionStorage.getItem("admin")) {
+    if (!sessionStorage.getItem("admin") && !sessionStorage.getItem("user")) {
       navigate("/auth");
       return;
     }
@@ -41,6 +41,13 @@ function Maint() {
       children: [
         { label: <span>Ascending <SortAscendingOutlined className="ml-2" /></span>, key: "aToZ", },
         { label: <span>Descending <SortDescendingOutlined className="ml-2" /></span>, key: "zToA", },
+      ],
+    },
+    {
+      label: "Maintenance", key: "2",
+      children: [
+        { label: <span>New date</span>, key: "newestDate", },
+        { label: <span>Old date</span>, key: "oldestDate", },
       ],
     },
   ];
@@ -98,7 +105,7 @@ function Maint() {
               color="blue"
               closable
               onClose={() => setSortType("")}>
-              Sort by {sortType === "low2High" || sortType === "high2Low" ? "GPA" : "name"}
+              Sort by {sortType === "newestDate" || sortType === "oldestDate" ? "Maintenance Date" : "Name"}
             </Tag>
           )}
           <Dropdown

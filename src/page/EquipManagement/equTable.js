@@ -43,10 +43,18 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       : "even:bg-gray-100";
   };
 
-  const sortList = (stdList, order) => {
-    return [...stdList].sort((a, b) => {
+  const sortList = (equList, order) => {
+    return [...equList].sort((a, b) => {
+      const dateExpA = new Date(a.equExpiryDate);
+      const dateExpB = new Date(b.equExpiryDate);
+      const dateManuA = new Date(a.equManufactureDate);
+      const dateManuB = new Date(b.equManufactureDate);
       if (order === "aToZ") return a.equName.localeCompare(b.equName);
       if (order === "zToA") return b.equName.localeCompare(a.equName);
+      if (order === "ascDateExp") return dateExpB - dateExpA;
+      if (order === "desDateExp") return dateExpA - dateExpB;
+      if (order === "ascDateManu") return dateManuB - dateManuA;
+      if (order === "desDateManu") return dateManuA - dateManuB;
       return 0;
     });
   };
@@ -123,6 +131,7 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       title: "Name",
       dataIndex: "equName",
       key: "equName",
+      render: (equName) => <span className="font-bold text-orange cursor-pointer">{equName}</span>
     },
     {
       title: "Manufacture Date",
@@ -131,10 +140,9 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       render: (equManufactureDate) => <span>{new Date(equManufactureDate)?.toLocaleDateString()}</span>,
     },
     {
-      title: "Price",
-      dataIndex: "equPrice",
-      key: "equPrice",
-      render: (equPrice) => <span>{equPrice} VND</span>
+      title: "Manufacturer",
+      dataIndex: "equManufacturer",
+      key: "equManufacturer",
     },
     {
       title: "Expiry Date",
@@ -143,9 +151,10 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       render: (equExpiryDate) => <span>{new Date(equExpiryDate)?.toLocaleDateString()}</span>,
     },
     {
-      title: "Manufacturer",
-      dataIndex: "equManufacturer",
-      key: "equManufacturer",
+      title: "Price",
+      dataIndex: "equPrice",
+      key: "equPrice",
+      render: (equPrice) => <span>{equPrice} VND</span>
     },
     {
       title: "Status",
@@ -186,6 +195,9 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
         columns={columns}
         dataSource={equListSlice}
         rowClassName={rowClassName}
+        scroll={{
+          y: 470,
+        }}
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {

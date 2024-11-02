@@ -1,14 +1,16 @@
-import { DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined } from '@ant-design/icons';
+import { DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Card, Menu, Typography } from 'antd';
 import React from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setPageTitle } from '../../redux/page/pageSlice';
 import logo from "../../assets/img/logo.PNG";
 
 function UserSliderbar({ isMinimized, toggleSidebar, isHideLogo }) {
+  const selected = useSelector((state) => state.page?.page?.titile);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const theme = useSelector((state) => state.theme?.theme?.currentTheme);
 
   const handleLogout = () => {
     sessionStorage.removeItem("user");
@@ -18,7 +20,7 @@ function UserSliderbar({ isMinimized, toggleSidebar, isHideLogo }) {
 
   const menuItems = [
     {
-      key: "dashboard",
+      key: "Dashboard",
       icon: <HomeOutlined />,
       label: "Dashboard",
       onClick: () => {
@@ -27,7 +29,7 @@ function UserSliderbar({ isMinimized, toggleSidebar, isHideLogo }) {
       },
     },
     {
-      key: "equip-management",
+      key: "Equip Management",
       icon: <SlidersOutlined />,
       label: "Equip Management",
       onClick: () => {
@@ -36,12 +38,21 @@ function UserSliderbar({ isMinimized, toggleSidebar, isHideLogo }) {
       },
     },
     {
-      key: "maintenance-management",
+      key: "Maintenance Management",
       icon: <ToolOutlined />,
       label: "Maintenance",
       onClick: () => {
         dispatch(setPageTitle("Maintenance Management"));
         navigate("/main/maintenance-management");
+      },
+    },
+    {
+      key: "My Profile",
+      icon: <UserOutlined />,
+      label: "My Profile",
+      onClick: () => {
+        dispatch(setPageTitle("My Profile"));
+        navigate("/main/profile-user");
       },
     },
   ];
@@ -60,8 +71,9 @@ function UserSliderbar({ isMinimized, toggleSidebar, isHideLogo }) {
       </div>
 
       <Menu
-        // theme="dark"
+        theme={theme}
         className="transition-all duration-300 flex flex-col dark:bg-gray-800"
+        selectedKeys={[selected]}
         mode="inline"
         items={menuItems.map((item) => ({
           ...item,
