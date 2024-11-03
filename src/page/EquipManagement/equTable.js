@@ -125,13 +125,15 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       title: "No",
       dataIndex: "id",
       key: "id",
+      width: "5%",
       render: (text) => <span>{text}</span>,
     },
     {
       title: "Name",
       dataIndex: "equName",
       key: "equName",
-      render: (equName) => <span className="font-bold text-orange cursor-pointer">{equName}</span>
+      width: "20%",
+      render: (equName, record) => <span className="font-bold text-orange cursor-pointer">{equName} #{record.id}</span>
     },
     {
       title: "Manufacture Date",
@@ -179,6 +181,7 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       dataIndex: "equStatus",
       key: "action",
       // className: "max-w-12",
+      width: "7%",
       render: (equStatus, record) => (
         <DeleteFilled
           className=" text-black text-xl"
