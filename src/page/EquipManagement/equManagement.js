@@ -1,8 +1,8 @@
-import { CaretDownOutlined, FilterOutlined, SortAscendingOutlined } from '@ant-design/icons'
+import { FilterOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Form, Space, Tag } from 'antd'
 import Search from 'antd/es/transfer/search'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setPageTitle } from "../../redux/page/pageSlice";
 import EquTable from './equTable';
@@ -20,7 +20,7 @@ function Equ() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!sessionStorage.getItem("admin")) {
+    if (!sessionStorage.getItem("admin") && !sessionStorage.getItem("user")) {
       navigate("/auth");
       return;
     }
@@ -31,8 +31,22 @@ function Equ() {
     {
       label: "Name", key: "1",
       children: [
-        { label: "A to Z", key: "aToZ", },
-        { label: "Z to A", key: "zToA", },
+        { label: <span>Ascending <SortAscendingOutlined className="ml-2" /></span>, key: "aToZ", },
+        { label: <span>Descending <SortDescendingOutlined className="ml-2" /></span>, key: "zToA", },
+      ],
+    },
+    {
+      label: "Expire Date", key: "2",
+      children: [
+        { label: <span>Ascending date</span>, key: "ascDateExp", },
+        { label: <span>Descending  date</span>, key: "desDateExp", },
+      ],
+    },
+    {
+      label: "Manufacture Date", key: "3",
+      children: [
+        { label: <span>Ascending date</span>, key: "ascDateManu", },
+        { label: <span>Descending date</span>, key: "desDateManu", },
       ],
     },
   ];
@@ -56,16 +70,22 @@ function Equ() {
     });
     setCurrentPage(1);
   }
-  // console.log("Data std: ", form);
-  // console.log("Filter : ", filterType);
+  
+  const checkSortType = (sortType) => {
+    if(sortType === "ascDateManu" || sortType === "desDateManu")
+      return "Manufacture Date"
+    if(sortType === "ascDateExp" || sortType === "desDateExp")
+      return "Expire Date"
+    return "Name"
+  }
 
   return (
     <>
-      <div className='p-2 mt-8 flex items-center bg-white shadow-bottom dark:bg-white'>
+      <div className='p-2 mt-3 flex items-center bg-white shadow-bottom dark:bg-white'>
         <div className="w-1/3 justify-start">
           <Search
             className="ml-2 "
-            placeholder="Search by student name, GPA..."
+            placeholder="Search by equip name"
             allowClear
             value={searchText}
             onChange={(e) => {
@@ -101,7 +121,7 @@ function Equ() {
               color="blue"
               closable
               onClose={() => setSortType("")}>
-              Sort by {sortType === "low2High" || sortType === "high2Low" ? "GPA" : "name"}
+              Sort by {checkSortType(sortType)}
             </Tag>
           )}
 

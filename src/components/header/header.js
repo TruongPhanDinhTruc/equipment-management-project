@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react'
-// import { Menu, MenuHandler } from "@material-tailwind/react";
 import { MoonFilled, SunFilled } from "@ant-design/icons";
 import { Avatar, Dropdown, Menu, Switch } from "antd";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentTheme } from '../../redux/theme/themeSlice';
 
 function Header({ isMinimized }) {
   const [darkMode, setDarkMode] = useState(true);
   const user = JSON.parse(sessionStorage.getItem("user"));
   const role = sessionStorage.getItem("role");
   const pageTile = useSelector((state) => state.page?.page?.titile);
-  
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
+      dispatch(setCurrentTheme("dark"));
     } else {
       document.documentElement.classList.remove("dark");
+      dispatch(setCurrentTheme("light"));
     }
   }, [darkMode]);
 

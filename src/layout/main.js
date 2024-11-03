@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Header from "../components/header/header";
 import { AdSidebar } from "../components/sliderbar/adSliderbar";
+import UserSliderbar from "../components/sliderbar/userSliderbar";
 
 export default function Admin() {
   const userRole = sessionStorage.getItem("role");
@@ -54,13 +55,13 @@ export default function Admin() {
           toggleSidebar={toggleSidebar}
         ></AdSidebar>
       )}
-      {/* {userRole === "user" && (
-        <UniSidebar
+      {userRole === "user" && (
+        <UserSliderbar
           isMinimized={isSidebarMinimized}
           isHideLogo={isHideLogo}
           toggleSidebar={toggleSidebar}
-        ></UniSidebar>
-      )} */}
+        ></UserSliderbar>
+      )}
       <div className="w-full bg-blueGray-100 dark:bg-gray-200">
         {/* <AdminNavbar /> */}
         <div className="flex flex-col flex-1 h-screen w-full ">

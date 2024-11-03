@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react'
 import MaintTable from './maintTable';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Form } from 'antd';
+import { Button, Dropdown, Form, Space, Tag } from 'antd';
 import { setPageTitle } from '../../redux/page/pageSlice';
 import MaintModal from './maintModal';
+import { FilterOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 
 function Maint() {
   const [form] = Form.useForm();
@@ -18,16 +19,53 @@ function Maint() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!sessionStorage.getItem("admin")) {
+    if (!sessionStorage.getItem("admin") && !sessionStorage.getItem("user")) {
       navigate("/auth");
       return;
     }
     dispatch(setPageTitle("Maintenance Management"));
   }, []);
-  
+
+  const handleFilter = (type, e, name) => {
+    setFilterType({
+      type: type,
+      value: e,
+      name: name
+    });
+    setCurrentPage(1);
+  }
+
+  const itemsSort = [
+    {
+      label: "Name", key: "1",
+      children: [
+        { label: <span>Ascending <SortAscendingOutlined className="ml-2" /></span>, key: "aToZ", },
+        { label: <span>Descending <SortDescendingOutlined className="ml-2" /></span>, key: "zToA", },
+      ],
+    },
+    {
+      label: "Maintenance", key: "2",
+      children: [
+        { label: <span>New date</span>, key: "newestDate", },
+        { label: <span>Old date</span>, key: "oldestDate", },
+      ],
+    },
+  ];
+
+  const itemsFilter = [
+    {
+      label: "Status", key: "1",
+      children: [
+        { label: "Activating", key: "Activating", },
+        { label: "Under Repair", key: "Under Repair", },
+        { label: "Defective", key: "Defective", },
+      ],
+    },
+  ];
+
   return (
     <>
-      <div className='p-2 mt-8 flex items-center bg-white shadow-bottom dark:bg-white'>
+      <div className='p-2 mt-3 flex items-center bg-white shadow-bottom dark:bg-white'>
         <div className="w-1/3 justify-start">
           <Search
             className="ml-2 "
@@ -41,7 +79,61 @@ function Maint() {
             size="large" />
         </div>
         <div className="w-2/3 flex justify-end">
+          {filterType.type === "status" && (
+            <Tag
+              className="items-center flex"
+              color="blue"
+              closable
+              onClose={() => handleFilter(null, "", "")}>
+              Filter by {filterType.value}
+            </Tag>
+          )}
 
+          {filterType.type === "location" && (
+            <Tag
+              className="items-center flex"
+              color="blue"
+              closable
+              onClose={() => handleFilter(null, "", "")}>
+              Filter by {filterType.name}
+            </Tag>
+          )}
+
+          {sortType && (
+            <Tag
+              className="items-center flex"
+              color="blue"
+              closable
+              onClose={() => setSortType("")}>
+              Sort by {sortType === "newestDate" || sortType === "oldestDate" ? "Maintenance Date" : "Name"}
+            </Tag>
+          )}
+          <Dropdown
+            className="ml-2 bg-orange text-white"
+            menu={{
+              items: itemsFilter,
+              onClick: ({ key }) => handleFilter("status", key, ""),
+            }}>
+            <Button size="large">
+              <Space>
+                Filter
+                <FilterOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+          <Dropdown
+            className="ml-2 bg-orange text-white"
+            menu={{
+              items: itemsSort,
+              onClick: ({ key }) => setSortType(key),
+            }}>
+            <Button size="large">
+              <Space>
+                Sort
+                <SortAscendingOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
         </div>
       </div>
       <MaintTable

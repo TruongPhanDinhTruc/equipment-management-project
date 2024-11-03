@@ -1,10 +1,18 @@
+
 import React, { useEffect, useState } from "react";
 import { Card, Col, Row } from "antd";
 import { ref, get } from "firebase/database";
 import { realtimeDB } from "../../firebase";
 import { DollarOutlined } from "@ant-design/icons";
-
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setPageTitle } from '../../redux/page/pageSlice';
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    
+  }, []);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [activeStatusCount, setActiveStatusCount] = useState(0);
   const [underrepairStatusCount, setUnderrepairStatusCount] = useState(0);
@@ -77,6 +85,11 @@ const Dashboard = () => {
       
   };
   useEffect(() => {
+    if (!sessionStorage.getItem("admin") && !sessionStorage.getItem("user")) {
+      navigate("/auth");
+      return;
+    }
+    dispatch(setPageTitle("Dashboard"));
     calculateTotalQuantity();
   }, []);
 

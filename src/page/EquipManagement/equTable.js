@@ -1,9 +1,9 @@
 import { DeleteFilled } from "@ant-design/icons";
-import { Pagination, Space, Switch, Table, Tag, Modal, } from "antd";
+import { Pagination, Table, Tag, Modal, } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { realtimeDB } from "../../firebase";
-import { onValue, ref, remove, update } from "firebase/database";
+import { onValue, ref, remove } from "firebase/database";
 import { toast } from "react-toastify";
 import { getAllEqu } from "../../redux/equip/equSlice";
 
@@ -43,12 +43,18 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       : "even:bg-gray-100";
   };
 
-  const sortList = (stdList, order) => {
-    return [...stdList].sort((a, b) => {
-      if (order === "low2High") return a.stdGPA - b.stdGPA;
-      if (order === "high2Low") return b.stdGPA - a.stdGPA;
+  const sortList = (equList, order) => {
+    return [...equList].sort((a, b) => {
+      const dateExpA = new Date(a.equExpiryDate);
+      const dateExpB = new Date(b.equExpiryDate);
+      const dateManuA = new Date(a.equManufactureDate);
+      const dateManuB = new Date(b.equManufactureDate);
       if (order === "aToZ") return a.equName.localeCompare(b.equName);
       if (order === "zToA") return b.equName.localeCompare(a.equName);
+      if (order === "ascDateExp") return dateExpB - dateExpA;
+      if (order === "desDateExp") return dateExpA - dateExpB;
+      if (order === "ascDateManu") return dateManuB - dateManuA;
+      if (order === "desDateManu") return dateManuA - dateManuB;
       return 0;
     });
   };
@@ -105,6 +111,7 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
         Promise.all([deleteEqu, deleteMaint])
           .then(() => {
             toast.success("Remove equip successfully.");
+            setCurrentPage(1);
           })
           .catch((err) => {
             toast.error("Error removing data: " + err);
@@ -124,11 +131,7 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       title: "Name",
       dataIndex: "equName",
       key: "equName",
-    },
-    {
-      title: "Quantily",
-      dataIndex: "equQuantity",
-      key: "equQuantity",
+      render: (equName) => <span className="font-bold text-orange cursor-pointer">{equName}</span>
     },
     {
       title: "Manufacture Date",
@@ -137,10 +140,9 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       render: (equManufactureDate) => <span>{new Date(equManufactureDate)?.toLocaleDateString()}</span>,
     },
     {
-      title: "Price",
-      dataIndex: "equPrice",
-      key: "equPrice",
-      render: (equPrice) => <span>{equPrice} VND</span>
+      title: "Manufacturer",
+      dataIndex: "equManufacturer",
+      key: "equManufacturer",
     },
     {
       title: "Expiry Date",
@@ -149,9 +151,10 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       render: (equExpiryDate) => <span>{new Date(equExpiryDate)?.toLocaleDateString()}</span>,
     },
     {
-      title: "Manufacturer",
-      dataIndex: "equManufacturer",
-      key: "equManufacturer",
+      title: "Price",
+      dataIndex: "equPrice",
+      key: "equPrice",
+      render: (equPrice) => <span>{equPrice} VND</span>
     },
     {
       title: "Status",
@@ -192,6 +195,9 @@ function EquTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
         columns={columns}
         dataSource={equListSlice}
         rowClassName={rowClassName}
+        scroll={{
+          y: 470,
+        }}
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {
