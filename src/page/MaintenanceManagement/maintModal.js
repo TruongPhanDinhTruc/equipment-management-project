@@ -154,12 +154,20 @@ function MaintModal({ isOpenModal, setIsOpenModal, form }) {
             </div>
           </div>
           <div className="flex gap-4">
-            <div className="w-1/2">
+            <div className="w-1/3">
               <Form.Item
                 // name="id"
                 label="Equip Name"
               >
                 <Input value={getEquById(form?.getFieldValue("id")).equName} readOnly size="large" />
+              </Form.Item>
+            </div>
+            <div className="w-1/6">
+              <Form.Item
+                // name="id"
+                label="# ID"
+              >
+                <Input value={form?.getFieldValue("id")} readOnly size="large" />
               </Form.Item>
             </div>
             <div className="w-1/2">

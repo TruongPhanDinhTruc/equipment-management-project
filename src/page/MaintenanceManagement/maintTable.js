@@ -166,7 +166,7 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
                     icon={<FlagOutlined style={{ color: item.color }} />}
                   /> */}
                   <span style={{ fontWeight: 'bold', fontSize: '16px' }}>
-                    {getEquById(item.id)?.equName}
+                    {getEquById(item.id)?.equName} #{item?.id}
                   </span>
                   {/* <Badge
                     count={item.id}

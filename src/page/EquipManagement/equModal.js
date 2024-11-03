@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Modal } from 'antd'
+import { Button, DatePicker, Form, Input, Modal } from 'antd'
 import { child, ref, set, update } from 'firebase/database';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
@@ -33,7 +33,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
 
       const equData = {
         id: id,
-        equName: `${equName} #${id}`,
+        equName: `${equName}`,
         ...otherValues,
         equManufactureDate: manufactureDate,
         equExpiryDate: expiryDate,
@@ -145,7 +145,19 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
           <h2 className="text-2xl font-medium mb-4 text-orange">Equip Infomation</h2>
           <div className="flex gap-4">
             <EquInputField name={"equName"} label={"Name Equip"} type={"text"} />
-            {isAddModal && <EquInputField name={"equQuantity"} label={"Quantity"} type={"number"} />}
+            <div className="w-1/2 flex gap-4">
+
+              {isAddModal ?
+                <EquInputField name={"equQuantity"} label={"Quantity"} type={"number"} /> :
+                <div className="w-1/2">
+                  <Form.Item
+                    name="id"
+                    label="# ID"
+                  >
+                    <Input size="large" readOnly />
+                  </Form.Item>
+                </div>}
+            </div>
           </div>
 
           <div className="flex gap-4">
