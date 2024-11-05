@@ -35,7 +35,7 @@ function PieChart({ equList }) {
     legend: {
       color: {
         title: false,
-        position: 'right',
+        position: 'top',
         rowPadding: 5,
       },
     },

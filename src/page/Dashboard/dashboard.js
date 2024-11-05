@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { setPageTitle } from '../../redux/page/pageSlice';
 import Cards from "./Card/cards";
 import PieChart from "./PieChart/pieChart";
+import BarChart from "./BarChart/barChart";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -60,8 +61,7 @@ const Dashboard = () => {
         </div>
         <div className="w-1/2 p-2">
           <Card>
-            {/* <PieChart
-              equList={equList} /> */}
+            <BarChart equList={equList}/>
           </Card>
         </div>
       </div>
