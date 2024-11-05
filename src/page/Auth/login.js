@@ -28,14 +28,15 @@ const Login = () => {
       const admin = await get(child(dbRef, "admin"));
       const user = await get(child(dbRef, "users"));
 
-      const data1 = admin.exists() ? admin.val() : null;
-      const data2 = user.exists() ? user.val() : null;
+      const data1 = admin.exists() ? Object.values(admin.val()) : null;
+      const data2 = user.exists() ? Object.values(user.val()) : null;
 
       // Combine data into an array
       const userList = data1.concat(data2);
       return userList;
     } catch (error) {
       toast.error("Error fetching data: ", error);
+      setLoading(false);
     }
   };
 
