@@ -8,6 +8,7 @@ import EquipManagement from "./page/EquipManagement/equManagement";
 import MaintenanceManagement from "./page/MaintenanceManagement/maintManagement";
 import Dashboard from "./page/Dashboard/dashboard";
 import ProfileUser from "./page/ProfileUser/profile";
+import CalendarPage from "./page/Calendar/calendar";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/main/equip-management" element={<EquipManagement />} />
         <Route path="/main/maintenance-management" element={<MaintenanceManagement />} />
         <Route path="/main/profile-user" element={<ProfileUser />} />
+        <Route path="/main/calendar" element={<CalendarPage />} />
       </Route>
     </Routes>
   );
