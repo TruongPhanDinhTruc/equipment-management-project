@@ -5,6 +5,7 @@ import { setPageTitle } from '../../redux/page/pageSlice';
 import { EditOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import background from "../../../src/assets/img/bg-user.png";
 import { Form } from "antd";
+import ProfileModal from './profileModal';
 
 function ProfileUserPage() {
   const currentUserLogin = sessionStorage.getItem("user")
@@ -65,6 +66,13 @@ function ProfileUserPage() {
           </div>
         </div>
       </div>
+      {isOpenEditModal && (
+        <ProfileModal
+          isOpenEditModal={isOpenEditModal}
+          setIsOpenEditModal={setIsOpenEditModal}
+          form={form}
+          currentUserLogin={currentUserLogin} />
+      )}
     </>
   )
 }
