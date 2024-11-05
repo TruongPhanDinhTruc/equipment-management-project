@@ -83,9 +83,12 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
     updates["/equ/" + form.getFieldValue("id")] = postData;
 
     return update(ref(realtimeDB), updates)
-      .then(toast.success("Update Equip successfully"), setIsOpenModal(false), setIsLoading(false))
+      .then(toast.success("Update Equip successfully"), setIsOpenModal(false))
       .catch((err) => {
         toast.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 

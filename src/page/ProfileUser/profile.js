@@ -34,15 +34,15 @@ function ProfileUserPage() {
             <img className="w-full" src={background} alt="" />
           </div>
           <div className="flex justify-center px-5 -mt-12 select-none">
-            <div className="h-32 w-32 p-2 rounded-full bg-purple flex justify-center items-center">
-              <span className="flex justify-center text-5xl">
+            <div className="h-32 w-32 p-2 rounded-full bg-orange flex justify-center items-center">
+              <span className="flex justify-center text-5xl text-white">
                 {currentUserLogin?.userName?.substring(0, 1)}
               </span>
             </div>
           </div>
           <div>
             <div className="text-center px-14">
-              <h2 className="text-purple text-3xl font-bold">
+              <h2 className="text-orange text-3xl font-bold">
                 <span className="mr-3">{currentUserLogin.userName}</span>
                 <EditOutlined
                   onClick={() => {
