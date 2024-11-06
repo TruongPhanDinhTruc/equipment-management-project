@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { realtimeDB } from "../../firebase";
 import { child, get, ref } from 'firebase/database';
 import { toast } from "react-toastify";
@@ -155,16 +155,16 @@ const Login = () => {
                       </span>
                     </label>
                   </div> */}
-                {/* <div className="flex flex-wrap justify-end items-end relative">
+                <div className="flex flex-wrap justify-end items-end relative">
                   <p className="text-end text-sm text-gray-500">
                     <Link
-                      to="/auth/forgetpass"
+                      to="/auth/forget-password"
                       className="font-semibold leading-6 hover:text-indigo-500"
                     >
                       Forget password?
                     </Link>
                   </p>
-                </div> */}
+                </div>
                 <div className="text-center mt-6">
                   <Button
                     loading={isLoading}
