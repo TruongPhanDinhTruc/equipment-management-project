@@ -1,4 +1,4 @@
-import { DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UserOutlined } from '@ant-design/icons';
+import { CalendarOutlined, DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Card, Menu, Typography } from 'antd';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,6 +46,15 @@ function UserSliderbar({ isMinimized, toggleSidebar, isHideLogo }) {
         navigate("/main/maintenance-management");
       },
     },
+    {
+      key: "Calendar",
+      icon: <CalendarOutlined />,
+      label: "Calendar",
+      onClick: () => {
+         dispatch(setPageTitle("Calendar"));
+         navigate("/main/calendar");
+      },
+   },
     {
       key: "My Profile",
       icon: <UserOutlined />,

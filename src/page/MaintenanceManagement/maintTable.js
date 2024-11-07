@@ -1,7 +1,7 @@
 import { CalendarOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import { Card, List, Pagination, Progress, Space, Tag } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getAllMaint } from '../../redux/maint/maintSlice';
 import { realtimeDB } from '../../firebase';
 import { onValue, ref } from 'firebase/database';
@@ -12,7 +12,7 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
   const [equList, setEquList] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
-  const equListFromRedux = useSelector((state) => state.equip?.equ?.allEqu);
+  // const equListFromRedux = useSelector((state) => state.equip?.equ?.allEqu);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -68,7 +68,7 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
     setPageSize(pageSize);
   };
 
-  const handleRowClick = (data) => {
+  const handleCardClick = (data) => {
     form.setFieldsValue(data);
     setIsOpenModal(true);
   };
@@ -155,7 +155,7 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
             key={item.id}
             style={{ marginBottom: '16px', marginTop: '16px', borderRadius: '8px' }}
             hoverable
-            onClick={() => handleRowClick(item)}>
+            onClick={() => handleCardClick(item)}>
             <List.Item>
               <Space style={{ width: '100%' }} direction="vertical">
                 <Space align="center">
