@@ -1,4 +1,4 @@
-import { CalendarOutlined, DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UserOutlined } from '@ant-design/icons';
+import { CalendarOutlined, DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UnorderedListOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Card, Menu, Typography } from 'antd';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,20 +41,31 @@ function UserSliderbar({ isMinimized, toggleSidebar, isHideLogo }) {
       key: "Maintenance Management",
       icon: <ToolOutlined />,
       label: "Maintenance",
-      onClick: () => {
-        dispatch(setPageTitle("Maintenance Management"));
-        navigate("/main/maintenance-management");
-      },
+      // onClick: () => {
+      //    dispatch(setPageTitle("Maintenance Management"));
+      //    navigate("/main/maintenance-management");
+      // },
+      children: [
+        {
+          key: "Maintenance Management",
+          icon: <UnorderedListOutlined />,
+          label: "Maintenance",
+          onClick: () => {
+            dispatch(setPageTitle("Maintenance Management"));
+            navigate("/main/maintenance-management");
+          },
+        },
+        {
+          key: "Calendar",
+          icon: <CalendarOutlined />,
+          label: "Calendar",
+          onClick: () => {
+            dispatch(setPageTitle("Calendar"));
+            navigate("/main/calendar");
+          },
+        },
+      ],
     },
-    {
-      key: "Calendar",
-      icon: <CalendarOutlined />,
-      label: "Calendar",
-      onClick: () => {
-         dispatch(setPageTitle("Calendar"));
-         navigate("/main/calendar");
-      },
-   },
     {
       key: "My Profile",
       icon: <UserOutlined />,

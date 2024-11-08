@@ -4,6 +4,7 @@ import pageReducer from "./page/pageSlice";
 import equReducer from "./equip/equSlice";
 import maintReducer from "./maint/maintSlice";
 import themeReducer from "./theme/themeSlice";
+import locReducer from "./loc/locSlice";
 
 export default configureStore({
     reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
         equip: equReducer,
         maint: maintReducer,
         theme: themeReducer,
+        loc: locReducer,
     },
 });  
