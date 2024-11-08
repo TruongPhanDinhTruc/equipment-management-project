@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageTitle } from "../../redux/page/pageSlice";
 import { Button, Card, Menu, Typography } from "antd";
-import { CalendarOutlined, DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UserOutlined } from "@ant-design/icons";
+import { CalendarOutlined, DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
 
 export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
    const selected = useSelector((state) => state.page?.page?.titile);
@@ -51,19 +51,30 @@ export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
          key: "Maintenance Management",
          icon: <ToolOutlined />,
          label: "Maintenance",
-         onClick: () => {
-            dispatch(setPageTitle("Maintenance Management"));
-            navigate("/main/maintenance-management");
-         },
-      },
-      {
-         key: "Calendar",
-         icon: <CalendarOutlined />,
-         label: "Calendar",
-         onClick: () => {
-            dispatch(setPageTitle("Calendar"));
-            navigate("/main/calendar");
-         },
+         // onClick: () => {
+         //    dispatch(setPageTitle("Maintenance Management"));
+         //    navigate("/main/maintenance-management");
+         // },
+         children: [
+            {
+               key: "Maintenance Management",
+               icon: <UnorderedListOutlined />,
+               label: "Maintenance",
+               onClick: () => {
+                  dispatch(setPageTitle("Maintenance Management"));
+                  navigate("/main/maintenance-management");
+               },
+            },
+            {
+               key: "Calendar",
+               icon: <CalendarOutlined />,
+               label: "Calendar",
+               onClick: () => {
+                  dispatch(setPageTitle("Calendar"));
+                  navigate("/main/calendar");
+               },
+            },
+         ],
       },
    ];
 
