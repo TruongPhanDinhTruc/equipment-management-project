@@ -6,8 +6,9 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setPageTitle } from '../../redux/page/pageSlice';
 import LocTable from './locTable';
+import LocModal from './locModal';
 
-function LocManagement() {
+function Loc() {
   const [form] = Form.useForm();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isAddModal, setIsAddModal] = useState("");
@@ -162,8 +163,16 @@ function LocManagement() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+
+      {isOpenModal && (
+        <LocModal
+          form={form}
+          isOpenModal={isOpenModal}
+          isAddModal={isAddModal}
+          setIsOpenModal={setIsOpenModal} />
+      )}
     </>
   )
 }
 
-export default LocManagement
+export default Loc

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const locSlice = createSlice({
-  name: "loc",
+  name: "location",
   initialState: {
     loc: {
       allLoc: null,
