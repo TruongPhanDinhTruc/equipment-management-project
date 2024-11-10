@@ -9,7 +9,7 @@ function LocInputField({ name, label, type }) {
                 label={label}
                 rules={[
                     {
-                        required: true,
+                        required: name !== "locDescription" ? true : false,
                         message: "Please input the " + label,
                     },
                     {
