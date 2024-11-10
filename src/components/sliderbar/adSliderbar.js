@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageTitle } from "../../redux/page/pageSlice";
 import { Button, Card, Menu, Typography } from "antd";
-import { CalendarOutlined, DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
+import { CalendarOutlined, DoubleLeftOutlined, HddOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
 
 export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
    const selected = useSelector((state) => state.page?.page?.titile);
@@ -59,7 +59,7 @@ export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
             {
                key: "Maintenance Management",
                icon: <UnorderedListOutlined />,
-               label: "Maintenance",
+               label: "List",
                onClick: () => {
                   dispatch(setPageTitle("Maintenance Management"));
                   navigate("/main/maintenance-management");
@@ -75,6 +75,15 @@ export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
                },
             },
          ],
+      },
+      {
+         key: "Location Management",
+         icon: <HddOutlined />,
+         label: "Location Management",
+         onClick: () => {
+            dispatch(setPageTitle("Location Management"));
+            navigate("/main/location-management");
+         },
       },
    ];
 
