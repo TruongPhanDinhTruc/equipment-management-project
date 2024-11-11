@@ -1,7 +1,7 @@
-import { FilterOutlined, PlusOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
+import { PlusOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Form, Space, Tag } from 'antd';
 import Search from 'antd/es/transfer/search';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setPageTitle } from '../../redux/page/pageSlice';
@@ -14,10 +14,10 @@ function Loc() {
   const [isAddModal, setIsAddModal] = useState("");
   const [searchText, setSearchText] = useState("");
   const [sortType, setSortType] = useState("");
-  const [filterType, setFilterType] = useState({ type: null, value: "", name: "" });
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (!sessionStorage.getItem("admin") && !sessionStorage.getItem("user")) {
       navigate("/auth");
@@ -28,88 +28,52 @@ function Loc() {
 
   const itemsSort = [
     {
-      label: "Name", key: "1",
+      label: "Name",
+      key: "name",
       children: [
-        { label: <span>Ascending <SortAscendingOutlined className="ml-2" /></span>, key: "aToZ", },
-        { label: <span>Descending <SortDescendingOutlined className="ml-2" /></span>, key: "zToA", },
+        { label: <span>Ascending <SortAscendingOutlined className="ml-2" /></span>, key: "aToZ" },
+        { label: <span>Descending <SortDescendingOutlined className="ml-2" /></span>, key: "zToA" },
       ],
     },
     {
-      label: "Expire Date", key: "2",
+      label: "Floor",
+      key: "floor",
       children: [
-        { label: <span>Ascending date</span>, key: "ascDateExp", },
-        { label: <span>Descending  date</span>, key: "desDateExp", },
-      ],
-    },
-    {
-      label: "Manufacture Date", key: "3",
-      children: [
-        { label: <span>Ascending date</span>, key: "ascDateManu", },
-        { label: <span>Descending date</span>, key: "desDateManu", },
+        { label: <span>Ascending <SortAscendingOutlined className="ml-2" /></span>, key: "ascFloor" },
+        { label: <span>Descending <SortDescendingOutlined className="ml-2" /></span>, key: "desFloor" },
       ],
     },
   ];
-
-  const itemsFilter = [
-    {
-      label: "Status", key: "1",
-      children: [
-        { label: "Activating", key: "Activating", },
-        { label: "Under Repair", key: "Under Repair", },
-        { label: "Defective", key: "Defective", },
-      ],
-    },
-  ];
-
-  const handleFilter = (type, e, name) => {
-    setFilterType({
-      type: type,
-      value: e,
-      name: name
-    });
-    setCurrentPage(1);
-  }
 
   const checkSortType = (sortType) => {
-    if (sortType === "ascDateManu" || sortType === "desDateManu")
-      return "Manufacture Date"
-    if (sortType === "ascDateExp" || sortType === "desDateExp")
-      return "Expire Date"
-    return "Name"
-  }
+    if (sortType === "ascFloor" || sortType === "desFloor") return "Floor";
+    return "Name";
+  };
 
   return (
     <>
-      <div className='p-2 mt-3 flex items-center bg-white shadow-bottom dark:bg-white'>
+      <div className="p-2 mt-3 flex items-center bg-white shadow-bottom dark:bg-white">
         <div className="w-1/3 justify-start">
           <Search
-            className="ml-2 "
-            placeholder="Search by equip name"
+            className="ml-2"
+            placeholder="Search by location name"
             allowClear
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
-              setCurrentPage(1)
+              setCurrentPage(1);
             }}
-            size="large" />
+            size="large"
+          />
         </div>
         <div className="w-2/3 flex justify-end">
-          {filterType.type === "status" && (
-            <Tag
-              className="items-center flex"
-              color="blue"
-              closable
-              onClose={() => handleFilter(null, "", "")}>
-              Filter by {filterType.value}
-            </Tag>
-          )}
-
           {sortType && (
             <Tag
               className="items-center flex"
               color="blue"
               closable
-              onClose={() => setSortType("")}>
+              onClose={() => setSortType("")}
+            >
               Sort by {checkSortType(sortType)}
             </Tag>
           )}
@@ -117,23 +81,10 @@ function Loc() {
           <Dropdown
             className="ml-2 bg-orange text-white"
             menu={{
-              items: itemsFilter,
-              onClick: ({ key }) => handleFilter("status", key, ""),
-            }}>
-            <Button size="large">
-              <Space>
-                Filter
-                <FilterOutlined />
-              </Space>
-            </Button>
-          </Dropdown>
-
-          <Dropdown
-            className="ml-2 bg-orange text-white"
-            menu={{
               items: itemsSort,
               onClick: ({ key }) => setSortType(key),
-            }}>
+            }}
+          >
             <Button size="large">
               <Space>
                 Sort
@@ -148,7 +99,8 @@ function Loc() {
           onClick={() => {
             setIsAddModal(true);
             setIsOpenModal(true);
-          }}>
+          }}
+        >
           <PlusOutlined /> Location
         </Button>
       </div>
@@ -159,7 +111,6 @@ function Loc() {
         setIsOpenModal={setIsOpenModal}
         searchText={searchText}
         sortType={sortType}
-        filterType={filterType}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
@@ -169,10 +120,11 @@ function Loc() {
           form={form}
           isOpenModal={isOpenModal}
           isAddModal={isAddModal}
-          setIsOpenModal={setIsOpenModal} />
+          setIsOpenModal={setIsOpenModal}
+        />
       )}
     </>
-  )
+  );
 }
 
-export default Loc
+export default Loc;
