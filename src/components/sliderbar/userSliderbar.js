@@ -38,6 +38,15 @@ function UserSliderbar({ isMinimized, toggleSidebar, isHideLogo }) {
       },
     },
     {
+      key: "Floor Management",
+      icon: <SlidersOutlined />,
+      label: "Floor Management",
+      onClick: () => {
+         dispatch(setPageTitle("Floor Management"));
+         navigate("/main/flo-Management");
+      },
+   },
+    {
       key: "Maintenance Management",
       icon: <ToolOutlined />,
       label: "Maintenance",
