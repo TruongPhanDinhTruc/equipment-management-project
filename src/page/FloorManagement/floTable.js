@@ -87,10 +87,10 @@ function FloTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
     },
     {
       title: "Total Rooms",
-      dataIndex: "total_rooms",
-      key: "total_rooms",
+      dataIndex: "floorRoom",
+      key: "floorRoom",
       width: "10%",
-      render: (total_rooms) => <span>{total_rooms}</span>
+      render: (floorRoom) => <span>{floorRoom?.length}</span>
     },
     {
       title: "Action",
@@ -131,7 +131,7 @@ function FloTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
           showQuickJumper
           current={currentPage}
           pageSize={pageSize}
-          showTotal={(total) => `Total ${total} page`}
+          showTotal={(total) => `Total ${total} Floor`}
           onChange={handlePaging}
         ></Pagination>
       </div>

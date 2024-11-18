@@ -42,10 +42,10 @@ function UserSliderbar({ isMinimized, toggleSidebar, isHideLogo }) {
       icon: <SlidersOutlined />,
       label: "Floor Management",
       onClick: () => {
-         dispatch(setPageTitle("Floor Management"));
-         navigate("/main/flo-Management");
+        dispatch(setPageTitle("Floor Management"));
+        navigate("/main/floor-management");
       },
-   },
+    },
     {
       key: "Maintenance Management",
       icon: <ToolOutlined />,
