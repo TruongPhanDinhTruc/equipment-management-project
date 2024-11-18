@@ -12,7 +12,7 @@ import Dashboard from "./page/Dashboard/dashboard";
 import ProfileUser from "./page/ProfileUser/profile";
 import CalendarPage from "./page/Calendar/calendar";
 import LocationManagement from "./page/LocationManagement/locManagement";
-import FloManagement from "./page/FloorManagement/floManagement";
+import FloorManagement from "./page/FloorManagement/floManagement";
 
 function App() {
   return (
@@ -33,7 +33,7 @@ function App() {
         <Route path="/main/profile-user" element={<ProfileUser />} />
         <Route path="/main/calendar" element={<CalendarPage />} />
         <Route path="/main/location-management" element={<LocationManagement />} />
-        <Route path="/main/flo-Management" element={<FloManagement/>} />
+        <Route path="/main/floor-management" element={<FloorManagement/>} />
       </Route>
     </Routes>
   );

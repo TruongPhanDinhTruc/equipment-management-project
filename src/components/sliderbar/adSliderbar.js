@@ -48,15 +48,6 @@ export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
          },
       },
       {
-         key: "Floor Management",
-         icon: <SlidersOutlined />,
-         label: "Floor Management",
-         onClick: () => {
-            dispatch(setPageTitle("Floor Management"));
-            navigate("/main/flo-Management");
-         },
-      },
-      {
          key: "Maintenance Management",
          icon: <ToolOutlined />,
          label: "Maintenance",
@@ -92,6 +83,15 @@ export function AdSidebar({ isMinimized, toggleSidebar, isHideLogo }) {
          onClick: () => {
             dispatch(setPageTitle("Location Management"));
             navigate("/main/location-management");
+         },
+      },
+      {
+         key: "Floor Management",
+         icon: <SlidersOutlined />,
+         label: "Floor Management",
+         onClick: () => {
+            dispatch(setPageTitle("Floor Management"));
+            navigate("/main/floor-management");
          },
       },
    ];
