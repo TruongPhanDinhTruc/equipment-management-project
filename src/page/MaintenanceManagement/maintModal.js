@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Input, Modal, Select } from 'antd'
+import { Button, Cascader, DatePicker, Form, Input, Modal, Select } from 'antd'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
@@ -6,13 +6,26 @@ import { ref, update } from 'firebase/database';
 import { toast } from 'react-toastify';
 import { realtimeDB } from '../../firebase';
 
-function MaintModal({ isOpenModal, setIsOpenModal, form }) {
+function MaintModal({ isOpenModal, setIsOpenModal, form, flo, loc }) {
   const equListFromRedux = useSelector((state) => state.equip?.equ?.allEqu);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCancel = (e) => {
     setIsOpenModal(false);
   };
+
+  const options = flo.map((floor) => {
+    return {
+      value: floor.id,
+      label: `Floor ${floor.floNumber}`,
+      children: loc
+        .filter((location) => location.locFloorId === floor.id)
+        .map((location) => ({
+          value: location.id,
+          label: location.locName,
+        })),
+    };
+  });
 
   const handleEdit = (e) => {
     setIsLoading(true);
@@ -175,7 +188,20 @@ function MaintModal({ isOpenModal, setIsOpenModal, form }) {
                 name="maintLoc"
                 label="Location"
               >
-                <Input size="large" />
+                {/* <Input size="large" /> */}
+                <Cascader
+                size='large'
+                  options={options}
+                  changeOnSelect
+                  // onChange={(value) => {
+                  //   const [maintFloorId, maintLocId, maintRoomId] = value || [];
+                  //   const locationObject = {
+                  //     maintFloorId,
+                  //     maintLocId,
+                  //     maintRoomId,
+                  //   };
+                  // }}
+                />
               </Form.Item>
             </div>
           </div>

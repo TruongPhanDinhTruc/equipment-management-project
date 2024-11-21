@@ -2,8 +2,8 @@ import { Form, Input } from 'antd';
 import React from 'react'
 
 function LocInputField({ name, label, type }) {
-  return (
-    <div className="w-1/2">
+    return (
+        <div className="w-1/2">
             <Form.Item
                 name={name}
                 label={label}
@@ -28,7 +28,7 @@ function LocInputField({ name, label, type }) {
                 <Input size="large" type={type} />
             </Form.Item>
         </div>
-  )
+    )
 }
 
 export default LocInputField

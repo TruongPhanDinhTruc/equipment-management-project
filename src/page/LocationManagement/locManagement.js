@@ -7,6 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { setPageTitle } from '../../redux/page/pageSlice';
 import LocTable from './locTable';
 import LocModal from './locModal';
+import { onValue, ref } from 'firebase/database';
+import { realtimeDB } from '../../firebase';
+import { getAllFlo } from '../../redux/flo/floSlice';
 
 function Loc() {
   const [form] = Form.useForm();
@@ -15,6 +18,7 @@ function Loc() {
   const [searchText, setSearchText] = useState("");
   const [sortType, setSortType] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [floList, setFloList] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -23,8 +27,26 @@ function Loc() {
       navigate("/auth");
       return;
     }
+    getAllFloor();
     dispatch(setPageTitle("Location Management"));
   }, []);
+
+  const getAllFloor = () => {
+    const supRef = ref(realtimeDB, "flo");
+    onValue(supRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const data = await snapshot.val();
+        const floList = Object.values(data)
+        dispatch(getAllFlo(floList));
+        let floorOption = [];
+        floList.forEach((floor) => {
+          if (!floor) return;
+          floorOption.push({ value: floor.id, label: "Floor " + floor.floNumber });
+        });
+        setFloList(floorOption);
+      }
+    });
+  };
 
   const itemsSort = [
     {
@@ -118,6 +140,7 @@ function Loc() {
       {isOpenModal && (
         <LocModal
           form={form}
+          floList={floList}
           isOpenModal={isOpenModal}
           isAddModal={isAddModal}
           setIsOpenModal={setIsOpenModal}

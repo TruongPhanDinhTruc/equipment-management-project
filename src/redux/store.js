@@ -5,6 +5,7 @@ import equReducer from "./equip/equSlice";
 import maintReducer from "./maint/maintSlice";
 import themeReducer from "./theme/themeSlice";
 import locReducer from "./loc/locSlice";
+import floreducer from "./flo/floSlice";
 
 export default configureStore({
     reducer: {
@@ -14,5 +15,6 @@ export default configureStore({
         maint: maintReducer,
         theme: themeReducer,
         loc: locReducer,
+        flo: floreducer,
     },
 });  

@@ -5,8 +5,9 @@ import LocInputField from './locInputField';
 import { toast } from 'react-toastify';
 import { realtimeDB } from '../../firebase';
 import { child, ref, set, update } from 'firebase/database';
+import LocSelectField from './locSelectField';
 
-function LocModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
+function LocModal({ isOpenModal, isAddModal, setIsOpenModal, form, floList }) {
   const locList = useSelector((state) => state.loc?.loc?.allLoc);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,7 +55,7 @@ function LocModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
       });
   }
 
-  console.log("Location: ", locList);
+  console.log("Floor Option: ", floList);
   return (
     <>
       <Modal
@@ -79,7 +80,8 @@ function LocModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
           <h2 className="text-2xl font-medium mb-4 text-orange">Location Infomation</h2>
           <div className="flex gap-4">
             <LocInputField name={"locName"} label={"Location Name"} type={"text"}/>
-            <LocInputField name={"locFloorId"} label={"Floor Number"} type={"text"}/>
+            {/* <LocInputField name={"locFloorId"} label={"Floor Number"} type={"number"}/> */}
+            <LocSelectField name={"locFloorId"} label={"Floor Number"} listSelect={floList} />
           </div>
           <div className="flex gap-4">
             <LocInputField name={"locArea"} label={"Area"} type={"text"}/>

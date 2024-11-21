@@ -1,15 +1,12 @@
-import { Form } from 'antd'
+import { Form, Select } from 'antd'
 import React from 'react'
 
-function LocSelectField({ listSelect, name, label, isAddModal }) {
+function LocSelectField({ listSelect, name, label }) {
     return (
         <div className="w-1/2">
             <Form.Item
                 name={name}
                 label={label}
-                defaultValue={
-                    isAddModal ? "" : ""
-                }
                 rules={[
                     {
                         required: true,
@@ -18,8 +15,8 @@ function LocSelectField({ listSelect, name, label, isAddModal }) {
                 ]}
             >
                 <Select
-                    showSearch
-                    size="medium"
+                    // showSearch
+                    size="large"
                     filterOption={(input, option) =>
                         (option?.label ?? "")
                             .toLowerCase()

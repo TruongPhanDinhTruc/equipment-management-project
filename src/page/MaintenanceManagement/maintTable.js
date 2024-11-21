@@ -7,12 +7,11 @@ import { realtimeDB } from '../../firebase';
 import { onValue, ref } from 'firebase/database';
 import { getAllEqu } from '../../redux/equip/equSlice';
 
-function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, currentPage, setCurrentPage }) {
+function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, currentPage, setCurrentPage, flo, loc }) {
   const [maintList, setMaintList] = useState([]);
   const [equList, setEquList] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
-  // const equListFromRedux = useSelector((state) => state.equip?.equ?.allEqu);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,7 +25,6 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
     } catch (error) {
       console.error("Error fetching data: ", error);
     } finally {
-      // Đảm bảo luôn tắt loading dù thành công hay lỗi
       setIsLoading(false);
     }
   };
@@ -73,6 +71,24 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
     setIsOpenModal(true);
   };
 
+  const convertMaintLocToString = (maintLoc, loc, flo) => {
+    if (!Array.isArray(maintLoc))
+      return maintLoc;
+
+    const maintLocId = maintLoc[0];
+
+    const location = loc.find((location) => location.id === maintLocId);
+    const floor = location ? flo.find((floor) => floor.id === location.locFloorId) : null;
+
+    if (maintLoc.length === 1 && floor)
+      return `Floor ${floor.floNumber}`;
+    if (location && floor)
+      return `Floor ${floor.floNumber} / ${location.locName}`;
+    if (floor)
+      return `Floor ${floor.floNumber}`;
+    return "Not found location";
+  };
+
   const calculateDaysLeft = (maintenanceDate) => {
     if (!maintenanceDate) return null; // Nếu không có ngày, trả về null
 
@@ -110,7 +126,7 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
       if (order === "oldestDate") return dateA - dateB;
       return 0;
     });
-};
+  };
 
   const filterByStatus = (maintList, status) => {
     if (status.type !== "status")
@@ -186,7 +202,7 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
                   <span>{new Date(item.maintDate)?.toLocaleDateString()}</span>
                   <Space>
                     <EnvironmentOutlined />
-                    <span>{item.maintLoc}</span>
+                    <span>{convertMaintLocToString(item.maintLoc, loc, flo)}</span>
                   </Space>
                 </Space>
                 <div>
