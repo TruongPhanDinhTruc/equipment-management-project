@@ -19,27 +19,27 @@ function FloModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
   }, []);
 
   const getAllRoomByFloorId = () => {
-    setRoomList(form?.getFieldValue("floorRoom"));
+    setRoomList(form?.getFieldValue("floorRoom") || []);
   };
 
-  const handleAdd = async (e) => {
+  const handleAdd = async () => {
     setIsLoading(true);
-    let postData = {
-      ...form.getFieldsValue(true),
-      floorRoom: roomList,
-    };
-
-    const floRef = ref(realtimeDB, '/flo/');
-
     try {
+      let postData = {
+        ...form.getFieldsValue(true), 
+        floorRoom: roomList || [],
+      };
+
+      const floRef = ref(realtimeDB, "/flo/");
+
       const snapshot = await get(floRef);
       const currentData = snapshot.exists() ? snapshot.val() : {};
+
       const newId = Object.keys(currentData).length + 1;
 
       postData.id = newId;
 
       await set(ref(realtimeDB, `/flo/${newId}`), postData);
-
       toast.success("Add floor successfully");
       setIsOpenModal(false);
     } catch (err) {
@@ -48,6 +48,7 @@ function FloModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
       setIsLoading(false);
     }
   };
+  
 
   const handleEdit = async (e) => {
     setIsLoading(true);
@@ -73,7 +74,7 @@ function FloModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
   };
   
   const handleAddRoom = () => {
-    const maxKey = roomList.length > 0 ? Math.max(...roomList.map((room) => room.key)) : 0;
+    const maxKey = roomList.length > 0 ? Math.max(...roomList?.map((room) => room.key)) : 0;
     const newRoom = {
       key: maxKey + 1,
       roomNumber: null,

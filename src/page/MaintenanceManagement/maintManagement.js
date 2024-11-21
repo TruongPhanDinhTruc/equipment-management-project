@@ -7,6 +7,8 @@ import { Button, Dropdown, Form, Space, Tag } from 'antd';
 import { setPageTitle } from '../../redux/page/pageSlice';
 import MaintModal from './maintModal';
 import { FilterOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
+import { onValue, ref } from 'firebase/database';
+import { realtimeDB } from '../../firebase';
 
 function Maint() {
   const [form] = Form.useForm();
@@ -15,6 +17,8 @@ function Maint() {
   const [sortType, setSortType] = useState("");
   const [filterType, setFilterType] = useState({ type: null, value: "", name: "" });
   const [currentPage, setCurrentPage] = useState(1);
+  const [locList, setLocList] = useState([]);
+  const [floList, setFloList] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -23,8 +27,30 @@ function Maint() {
       navigate("/auth");
       return;
     }
+    getAllFloor();
+    getAllLocation();
     dispatch(setPageTitle("Maintenance Management"));
   }, []);
+
+  const getAllFloor = () => {
+    const supRef = ref(realtimeDB, "flo");
+    onValue(supRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const data = await snapshot.val();
+        setFloList(Object.values(data));
+      }
+    });
+  };
+
+  const getAllLocation = () => {
+    const supRef = ref(realtimeDB, "loc");
+    onValue(supRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const data = await snapshot.val();
+        setLocList(Object.values(data));
+      }
+    });
+  };
 
   const handleFilter = (type, e, name) => {
     setFilterType({
@@ -143,11 +169,15 @@ function Maint() {
         sortType={sortType}
         filterType={filterType}
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage} />
+        setCurrentPage={setCurrentPage}
+        flo={floList}
+        loc={locList} />
 
       {isOpenModal && (
         <MaintModal
           form={form}
+          flo={floList}
+          loc={locList}
           isOpenModal={isOpenModal}
           setIsOpenModal={setIsOpenModal} />
       )}
