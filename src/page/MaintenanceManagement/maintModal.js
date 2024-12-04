@@ -188,19 +188,10 @@ function MaintModal({ isOpenModal, setIsOpenModal, form, flo, loc }) {
                 name="maintLoc"
                 label="Location"
               >
-                {/* <Input size="large" /> */}
                 <Cascader
                 size='large'
                   options={options}
                   changeOnSelect
-                  // onChange={(value) => {
-                  //   const [maintFloorId, maintLocId, maintRoomId] = value || [];
-                  //   const locationObject = {
-                  //     maintFloorId,
-                  //     maintLocId,
-                  //     maintRoomId,
-                  //   };
-                  // }}
                 />
               </Form.Item>
             </div>
@@ -219,7 +210,7 @@ function MaintModal({ isOpenModal, setIsOpenModal, form, flo, loc }) {
                 name="maintenanceDate"
                 label="Maintenance Date"
               >
-                <DatePicker defaultValue={dayjs(form?.getFieldValue("maintDate"))} size="large" />
+                <DatePicker defaultValue={dayjs(form?.getFieldValue("maintDate"))} size="large" disabledDate={(current) => current && current <= dayjs().endOf('day')}/>
               </Form.Item>
             </div>
           </div>
