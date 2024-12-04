@@ -14,7 +14,7 @@ function MaintModal({ isOpenModal, setIsOpenModal, form, flo, loc }) {
     setIsOpenModal(false);
   };
 
-  const options = flo.map((floor) => {
+  const options = flo?.map((floor) => {
     return {
       value: floor.id,
       label: `Floor ${floor.floNumber}`,

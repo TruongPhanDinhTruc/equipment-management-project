@@ -6,15 +6,18 @@ import { getAllLoc } from '../../redux/loc/locSlice';
 import { Modal, Pagination, Table } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import { toast } from 'react-toastify';
+import { getAllFlo } from '../../redux/flo/floSlice';
 
 function LocTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, filterType, currentPage, setCurrentPage }) {
   const [locList, setLocList] = useState([]);
+  const [floList, setFloList] = useState([]); 
   const [filteredLocList, setFilteredLocList] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const dispatch = useDispatch();
 
   useEffect(() => {
     getAllLocFormDb();
+    getAllFloFromDb();
   }, []);
 
   useEffect(() => {
@@ -32,6 +35,24 @@ function LocTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       }
     });
   };
+
+  const getAllFloFromDb = () => {
+    const floRef = ref(realtimeDB, "flo");
+    onValue(floRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const floList = await snapshot.val();
+        setFloList(Object.values(floList));
+        dispatch(getAllFlo(floList));
+      }
+    });
+  };
+
+  const getFloById = (id) => {
+    const flo = floList?.find(
+      (flo) => String(flo?.id) === String(id)
+    );
+    return flo;
+  }
 
   const handleSearchAndSort = () => {
     let filteredData = [...locList];
@@ -109,6 +130,7 @@ function LocTable({ form, setIsAddModal, setIsOpenModal, searchText, sortType, f
       dataIndex: "locFloorId",
       key: "floorId",
       width: "7%",
+      render: (floorId) => <span>{getFloById(floorId)?.floNumber}</span>
     },
     {
       title: "Area",
