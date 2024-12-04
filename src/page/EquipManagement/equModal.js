@@ -176,7 +176,7 @@ function EquModal({ isOpenModal, isAddModal, setIsOpenModal, form }) {
                   },
                 ]}
               >
-                <DatePicker defaultValue={isAddModal ? null : dayjs(equManufactureDate)} size="large" />
+                <DatePicker defaultValue={isAddModal ? null : dayjs(equManufactureDate)} size="large" disabledDate={(current) => current && current > dayjs().endOf('day')}/>
               </Form.Item>
             </div>
           </div>

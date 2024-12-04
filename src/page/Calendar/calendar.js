@@ -11,14 +11,14 @@ import { realtimeDB } from '../../firebase';
 import CalendarModal from './calendarModal';
 
 function CalendarPage() {
-  const [value, setValue] = useState(() => dayjs('2017-01-25'));
-  const [selectedValue, setSelectedValue] = useState(() => dayjs('2017-01-25'));
   const [form] = Form.useForm();
   const [maintList, setMaintList] = useState([]);
   const [equList, setEquList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedDateInfo, setSelectedDateInfo] = useState([]);
+  const [locList, setLocList] = useState([]);
+  const [floList, setFloList] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -34,7 +34,7 @@ function CalendarPage() {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      await Promise.all([getAllMaintFromDb(), getAllEquFromDb()]);
+      await Promise.all([getAllMaintFromDb(), getAllEquFromDb(),getAllFloor(),getAllLocation()]);
     } catch (error) {
       console.error("Error fetching data: ", error);
     } finally {
@@ -65,18 +65,24 @@ function CalendarPage() {
     });
   }
 
-  const onSelect = (newValue) => {
-    setValue(newValue);
-    setSelectedValue(newValue);
-  };
-  const onPanelChange = (newValue) => {
-    setValue(newValue);
+  const getAllFloor = () => {
+    const supRef = ref(realtimeDB, "flo");
+    onValue(supRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const data = await snapshot.val();
+        setFloList(Object.values(data));
+      }
+    });
   };
 
-  const getMonthData = (value) => {
-    if (value.month() === 8) {
-      return 1394;
-    }
+  const getAllLocation = () => {
+    const supRef = ref(realtimeDB, "loc");
+    onValue(supRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const data = await snapshot.val();
+        setLocList(Object.values(data));
+      }
+    });
   };
 
   const getEquById = (id) => {
@@ -139,6 +145,8 @@ function CalendarPage() {
         <CalendarModal
           form={form}
           getEquById={getEquById}
+          flo={floList}
+          loc={locList}
           selectedDateInfo={selectedDateInfo}
           isOpenModal={isOpenModal}
           setIsOpenModal={setIsOpenModal} />

@@ -3,7 +3,7 @@ import { Card, List, Modal, Progress, Space, Tag } from 'antd'
 import React, { useState } from 'react'
 import MaintModal from '../MaintenanceManagement/maintModal';
 
-function CalendarModal({ isOpenModal, setIsOpenModal, selectedDateInfo, getEquById, form }) {
+function CalendarModal({ isOpenModal, setIsOpenModal, selectedDateInfo, getEquById, form, flo, loc }) {
   const [isOpenMaintModal, setIsOpenMaintModal] = useState(false);
 
   const handleCancel = (e) => {
@@ -105,6 +105,8 @@ function CalendarModal({ isOpenModal, setIsOpenModal, selectedDateInfo, getEquBy
       {isOpenMaintModal && (
         <MaintModal
           form={form}
+          flo={flo}
+          loc={loc}
           isOpenModal={isOpenMaintModal}
           setIsOpenModal={setIsOpenMaintModal} />
       )}
