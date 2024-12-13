@@ -40,6 +40,24 @@ function CalendarModal({ isOpenModal, setIsOpenModal, selectedDateInfo, getEquBy
     return "Maintenance date has come"
   }
 
+  const convertMaintLocToString = (maintLoc, loc, flo) => {
+    if (!Array.isArray(maintLoc))
+      return maintLoc;
+
+    const maintLocId = maintLoc[0];
+
+    const location = loc.find((location) => location.id === maintLocId);
+    const floor = location ? flo.find((floor) => floor.id === location.locFloorId) : null;
+
+    if (maintLoc.length === 1 && floor)
+      return `Floor ${floor.floNumber}`;
+    if (location && floor)
+      return `Floor ${floor.floNumber} / ${location.locName}`;
+    if (floor)
+      return `Floor ${floor.floNumber}`;
+    return "Not found location";
+  };
+  
   return (
     <>
       <Modal
@@ -84,7 +102,7 @@ function CalendarModal({ isOpenModal, setIsOpenModal, selectedDateInfo, getEquBy
                     <span>{new Date(item.maintDate)?.toLocaleDateString()}</span>
                     <Space>
                       <EnvironmentOutlined />
-                      <span>{item.maintLoc}</span>
+                      <span>{convertMaintLocToString(item.maintLoc, loc, flo)}</span>
                     </Space>
                   </Space>
                   <div>

@@ -91,9 +91,9 @@ function UserManagement() {
   };
 
   const handleUpdateUser = async () => {
-    const { userEmail, userName, userPhone } = updatedUser;
+    const { userEmail, userName, userPhone, userPassword } = updatedUser;
 
-    if (!userEmail || !userName || !userPhone) {
+    if (!userEmail || !userName || !userPhone || !userPassword) {
       alert("Please fill all fields.");
       return;
     }
