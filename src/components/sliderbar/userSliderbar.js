@@ -1,4 +1,4 @@
-import { CalendarOutlined, DoubleLeftOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UnorderedListOutlined, UserOutlined } from '@ant-design/icons';
+import { CalendarOutlined, DoubleLeftOutlined, HddOutlined, HomeOutlined, LogoutOutlined, MenuOutlined, SlidersOutlined, ToolOutlined, UnorderedListOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Card, Menu, Typography } from 'antd';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,12 +38,12 @@ function UserSliderbar({ isMinimized, toggleSidebar, isHideLogo }) {
       },
     },
     {
-      key: "Floor Management",
-      icon: <SlidersOutlined />,
-      label: "Floor Management",
+      key: "Location Management",
+      icon: <HddOutlined />,
+      label: "Location Management",
       onClick: () => {
-        dispatch(setPageTitle("Floor Management"));
-        navigate("/main/floor-management");
+        dispatch(setPageTitle("Location Management"));
+        navigate("/main/location-management");
       },
     },
     {
