@@ -220,7 +220,7 @@ function MaintTable({ form, setIsOpenModal, searchText, sortType, filterType, cu
       />
       <div className="flex justify-center">
         <Pagination
-          total={maintList?.length}
+          total={maintSortList?.length}
           showSizeChanger
           showQuickJumper
           current={currentPage}
